@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Mousquetaires - Brignoles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #E2001A;
+            --dark: #1a1a1a;
+            --darker: #0d0d0d;
+            --bg: #f5f5f5;
+            --card-bg: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e0e0e0;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            background: var(--dark);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-section {
+            padding: 35px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--darker);
+        }
+
+        .logo-section h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-section p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .nav {
+            flex: 1;
+            padding: 25px 15px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            margin-bottom: 6px;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--primary);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(226, 0, 26, 0.3);
+        }
+
+        .nav-item.active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-item i {
+            width: 22px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg);
+        }
+
+        .header {
+            background: white;
+            padding: 25px 45px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .header h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .header-date {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .header-badge {
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(226, 0, 26, 0.25);
+        }
+
+        .content {
+            padding: 35px 45px;
+            overflow-y: auto;
+        }
+
+        /* CARDS 3D */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 28px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), #ff0022);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+            border-color: var(--primary);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+            font-size: 22px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon.green {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #059669;
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #2563eb;
+        }
+
+        .stat-icon.red {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: var(--primary);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .alert-card {
+            border: 2px solid var(--primary);
+            background: linear-gradient(135deg, #fff5f5, white);
+        }
+
+        .alert-card .stat-value {
+            color: var(--primary);
+        }
+
+        .alert-card .stat-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* SECTIONS 3D */
+        .section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-header {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header i {
+            color: var(--primary);
+            font-size: 22px;
+        }
+
+        /* DOCUMENT LIST 3D */
+        .doc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .doc-item {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .doc-item::after {
+            content: '';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .doc-item:hover {
+            background: #fafafa;
+            border-color: var(--primary);
+            transform: translateX(8px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .doc-item:hover::after {
+            opacity: 1;
+            transform: translateY(-50%) translateX(-5px);
+        }
+
+        .doc-icon {
+            font-size: 28px;
+            color: var(--primary);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .doc-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .doc-info p {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* ALERT SECTION 3D */
+        .alert-section {
+            background: linear-gradient(135deg, #fff5f5, #fffbfb);
+            border: 2px solid var(--primary);
+            box-shadow: 0 6px 20px rgba(226, 0, 26, 0.15);
+        }
+
+        .alert-section .section-header {
+            color: var(--primary);
+            border-color: rgba(226, 0, 26, 0.2);
+        }
+
+        .alert-content {
+            padding: 20px 0;
+        }
+
+        .alert-content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .alert-content p {
+            font-size: 15px;
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(226, 0, 26, 0.25);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            background: #c5001a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(226, 0, 26, 0.35);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* DEV PAGE */
+        .dev-page {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--text-light);
+        }
+
+        .dev-page i {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .dev-page h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .dev-page p {
+            font-size: 15px;
+        }
+
+        /* PAGES */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: fixed;
+                bottom: 0;
+                flex-direction: row;
+                height: 75px;
+                z-index: 100;
+                box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+            }
+
+            .logo-section {
+                display: none;
+            }
+
+            .nav {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                padding: 0;
+                justify-content: space-around;
+                align-items: center;
+            }
+
+            .nav-item {
+                flex-direction: column;
+                gap: 5px;
+                font-size: 11px;
+                padding: 10px 5px;
+                flex: 1;
+                text-align: center;
+            }
+
+            .nav-item::before {
+                display: none;
+            }
+
+            .nav-item:hover {
+                transform: translateX(0);
+            }
+
+            .nav-item i {
+                font-size: 22px;
+            }
+
+            .main {
+                margin-bottom: 75px;
+            }
+
+            .header, .content {
+                padding: 20px 20px;
+            }
+
+            .header h2 {
+                font-size: 22px;
+            }
+
+            .header-badge {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <h1>Les Mousquetaires</h1>
+                <p>Brignoles - Logistique & QHSE</p>
+            </div>
+            
+            <nav class="nav">
+                <div class="nav-item active" onclick="navigate('home', this)">
+                    <i class="fas fa-home"></i>
+                    <span>Accueil</span>
+                </div>
+                <div class="nav-item" onclick="navigate('reception', this)">
+                    <i class="fas fa-truck"></i>
+                    <span>Réception</span>
+                </div>
+                <div class="nav-item" onclick="navigate('stock', this)">
+                    <i class="fas fa-boxes"></i>
+                    <span>Stock</span>
+                </div>
+                <div class="nav-item" onclick="navigate('qualite', this)">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Qualité</span>
+                </div>
+                <div class="nav-item" onclick="navigate('securite', this)">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Sécurité</span>
+                </div>
+                <div class="nav-item" onclick="navigate('documents', this)">
+                    <i class="fas fa-folder"></i>
+                    <span>Documents</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main">
+            <header class="header">
+                <div>
+                    <div class="header-date" id="current-date"></div>
+                    <h2 id="page-title">Vue d'ensemble</h2>
+                </div>
+                <div class="header-badge">
+                    <i class="fas fa-circle" style="font-size: 8px;"></i>
+                    <span>EN LIGNE</span>
+                </div>
+            </header>
+
+            <div class="content">
+                <!-- PAGE ACCUEIL -->
+                <div id="home" class="page active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon green">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="stat-value">98.5%</div>
+                            <div class="stat-label">Conformité globale</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon blue">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-value">45</div>
+                            <div class="stat-label">Jours sans accident</div>
+                        </div>
+
+                        <div class="stat-card alert-card">
+                            <div class="stat-icon red">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-value">1</div>
+                            <div class="stat-label">Alerte qualité en cours</div>
+                        </div>
+                    </div>
+
+                    <div class="section alert-section">
+                        <div class="section-header">
+                            <i class="fas fa-bell"></i>
+                            Alerte qualité active
+                        </div>
+                        <div class="alert-content">
+                            <h3>LOT #4852 - Jambon Supérieur</h3>
+                            <p>Action requise : Isoler immédiatement le lot en zone de quarantaine.</p>
+                            <button class="btn" onclick="alert('✓ Confirmation enregistrée')">Confirmer l'isolation</button>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-header">
+                            <i class="fas fa-chart-line"></i>
+                            Activité du jour
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" style="font-size: 28px;">24</div>
+                                <div class="stat-label">Réceptions traitées</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" style="font-size: 28px;">156</div>
+                                <div class="stat-label">Palettes expédiées</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE RECEPTION -->
+                <div id="reception" class="page">
+                    <div class="section">
+                        <div class="section-header">
+                            <i class="fas fa-truck-loading"></i>
+                            Procédures de réception
+                        </div>
+                        <div class="doc-list">
+                            <div class="doc-item" onclick="alert('📄 Ouverture du document...')">
+                                <i class="fas fa-file-pdf doc-icon"></i>
+                                <div class="doc-info">
+                                    <h4>Protocole de déchargement</h4>
+                                    <p>Version 2.4 - Mise à jour 12/2025</p>
+                                </div>
+                            </div>
+                            <div class="doc-item" onclick="alert('📄 Ouverture du document...')">
+                                <i class="fas fa-thermometer-half doc-icon"></i>
+                                <div class="doc-info">
+                                    <h4>Contrôle de température</h4>
+                                    <p>Procédure obligatoire - Produits frais</p>
+                                </div>
+                            </div>
+                            <div class="doc-item" onclick="alert('📄 Ouverture du document...')">
+                                <i class="fas fa-clipboard-check doc-icon"></i>
+                                <div class="doc-info">
+                                    <h4>Liste de contrôle qualité</h4>
+                                    <p>Checklist réception - Version actuelle</p>
+                                </div>
+                            </div>
+                            <div class="doc-item" onclick="alert('📄 Ouverture du document...')">
+                                <i class="fas fa-barcode doc-icon"></i>
+                                <div class="doc-info">
+                                    <h4>Traçabilité produits</h4>
+                                    <p>Procédure d'enregistrement</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE STOCK -->
+                <div id="stock" class="page">
+                    <div class="section">
+                        <div class="dev-page">
+                            <i class="fas fa-boxes"></i>
+                            <h3>Gestion du stock</h3>
+                            <p>Fonctionnalité en développement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE QUALITE -->
+                <div id="qualite" class="page">
+                    <div class="section alert-section">
+                        <div class="section-header">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Alerte retrait produit
+                        </div>
+                        <div class="alert-content">
+                            <h3>LOT #4852 - Jambon Supérieur</h3>
+                            <p>Action requise : Isoler immédiatement le lot en zone de quarantaine suite à une non-conformité détectée lors du contrôle qualité.</p>
+                            <button class="btn" onclick="alert('✓ Retrait confirmé et tracé')">Confirmer l'isolation du lot</button>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-header">
+                            <i class="fas fa-chart-line"></i>
+                            Indicateurs qualité
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">98.5%</div>
+                                <div class="stat-label">Conformité produits</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Contrôles ce mois</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">3</div>
+                                <div class="stat-label">Non-conformités mineures</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE SECURITE -->
+                <div id="securite" class="page">
+                    <div class="section">
+                        <div class="dev-page">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Sécurité & Prévention</h3>
+                            <p>Fonctionnalité en développement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE DOCUMENTS -->
+                <div id="documents" class="page">
+                    <div class="section">
+                        <div class="dev-page">
+                            <i class="fas fa-folder-open"></i>
+                            <h3>Gestion documentaire</h3>
+                            <p>Fonctionnalité en développement</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Date du jour
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').textContent = 
+            new Date().toLocaleDateString('fr-FR', dateOptions);
+
+        // Navigation
+        function navigate(pageId, element) {
+            // Masquer toutes les pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Afficher la page sélectionnée
+            document.getElementById(pageId).classList.add('active');
+            
+            // Mettre à jour le menu
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            if (element) {
+                element.classList.add('active');
+            }
+            
+            // Mettre à jour le titre
+            const titles = {
+                'home': 'Vue d\'ensemble',
+                'reception': 'Réception',
+                'stock': 'Gestion du stock',
+                'qualite': 'Contrôle qualité',
+                'securite': 'Sécurité',
+                'documents': 'Documents'
+            };
+            document.getElementById('page-title').textContent = titles[pageId] || pageId;
+        }
+    </script>
+</body>
+</html>
