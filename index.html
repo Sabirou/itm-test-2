@@ -94,8 +94,10 @@
       inset: 0;
       background: var(--bg-deep);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 20px;
       z-index: 10000;
       opacity: 1;
       transition: opacity 0.5s ease;
@@ -110,6 +112,14 @@
       animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+    
+    .loading-text {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+    }
 
     /* LAYOUT */
     .app { display: flex; height: 100vh; width: 100%; opacity: 0; transition: opacity 0.6s ease; }
@@ -394,6 +404,7 @@
       white-space: nowrap;
     }
     .modal-btn:hover { background: rgba(255,255,255,0.14); }
+    .modal-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     .modal-body { display: grid; grid-template-columns: 420px 1fr; min-height: 70vh; }
     .modal-left { border-right: 1px solid var(--border); padding: 16px; overflow: auto; }
@@ -409,6 +420,34 @@
       outline: none;
       margin-bottom: 10px;
     }
+    
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    
+    .filter-pill {
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+    }
+    
+    .filter-pill:hover {
+      background: rgba(255,255,255,0.12);
+    }
+    
+    .filter-pill.active {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
 
     .doc-list { display: grid; gap: 10px; }
     .doc-row {
@@ -418,13 +457,30 @@
       padding: 12px 12px;
       cursor: pointer;
       transition: 0.2s ease;
+      position: relative;
     }
     .doc-row:hover { background: rgba(255,255,255,0.075); transform: translateY(-1px); }
-    .doc-row strong { display: block; font-family: 'Rajdhani', sans-serif; letter-spacing: 0.5px; }
-    .doc-row small { color: var(--text-dim); }
+    .doc-row.selected {
+      background: rgba(226, 0, 26, 0.15);
+      border-color: var(--primary);
+    }
+    .doc-row strong { display: block; font-family: 'Rajdhani', sans-serif; letter-spacing: 0.5px; font-size: 15px; }
+    .doc-row small { color: var(--text-dim); font-size: 12px; }
+    
+    .doc-row .category-tag {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 3px 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
 
-    .viewer-bar { display: flex; gap: 10px; flex-wrap: wrap; }
-    .viewer-title { font-family: 'Rajdhani', sans-serif; font-weight: 900; letter-spacing: 0.6px; }
+    .viewer-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .viewer-title { font-family: 'Rajdhani', sans-serif; font-weight: 900; letter-spacing: 0.6px; font-size: 16px; }
     .viewer-frame {
       border: 1px solid rgba(255,255,255,0.10);
       border-radius: 14px;
@@ -432,7 +488,28 @@
       flex: 1;
       min-height: 56vh;
       background: rgba(255,255,255,0.03);
+      position: relative;
     }
+    
+    .viewer-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    .viewer-loading.show {
+      opacity: 1;
+    }
+    
     iframe { width: 100%; height: 100%; border: none; }
 
     /* TOAST */
@@ -455,6 +532,17 @@
       max-width: 520px;
     }
     .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* DOC COUNT */
+    .doc-count {
+      font-size: 13px;
+      color: var(--text-dim);
+      padding: 8px 12px;
+      text-align: center;
+      font-family: 'Rajdhani', sans-serif;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-top: 10px;
+    }
 
     /* MOBILE */
     @media (max-width: 1024px) {
@@ -484,7 +572,7 @@
       .puzzle-container { grid-template-columns: repeat(3, 1fr); grid-template-rows: auto; aspect-ratio: auto; }
 
       .modal-body { grid-template-columns: 1fr; }
-      .modal-left { border-right: none; border-bottom: 1px solid var(--border); }
+      .modal-left { border-right: none; border-bottom: 1px solid var(--border); max-height: 40vh; }
       .viewer-frame { min-height: 50vh; }
       .toast { bottom: 100px; right: 20px; left: 20px; text-align: center; }
     }
@@ -495,6 +583,7 @@
   <!-- LOADING OVERLAY -->
   <div class="loading-overlay" id="loading">
     <div class="spinner"></div>
+    <div class="loading-text" id="loadingText">Chargement des documents...</div>
   </div>
 
   <div id="bg-grid"></div>
@@ -507,7 +596,7 @@
              src="GROUPEMENT_MOUSQUETAIRES_H_INV_HD.png"
              alt="Groupement Mousquetaires"
              onclick="nav('puzzle', document.querySelectorAll('.nav-link')[0])"
-             data-fallback="241111_Symbole R&B_320x320_RVB.png">
+             onerror="this.src='241111_Symbole R&B_320x320_RVB.png'">
 
         <div class="brand-text">
           <h2>BRIGNOLES</h2>
@@ -517,27 +606,27 @@
 
       <div class="menu">
         <div class="nav-link active" onclick="nav('puzzle', this)">
-          <img class="nav-icon" src="liste.png" alt="Puzzle" loading="lazy" data-fallback="liste.png">
+          <img class="nav-icon" src="liste.png" alt="Puzzle" loading="lazy" onerror="this.style.opacity='0.3'">
           <span>Puzzle QHSE</span>
         </div>
 
-        <div class="nav-link" onclick="nav('poi', this)">
-          <img class="nav-icon" src="usine.png" alt="Incendie" loading="lazy" data-fallback="usine.png">
+        <div class="nav-link" onclick="openDriveModal('🔥', 'INCENDIE / POI', 'POI')">
+          <img class="nav-icon" src="usine.png" alt="Incendie" loading="lazy" onerror="this.style.opacity='0.3'">
           <span>Incendie</span>
         </div>
 
-        <div class="nav-link" onclick="nav('retrait', this)">
-          <img class="nav-icon" src="chariot.png" alt="Retrait" loading="lazy" data-fallback="carton.png">
+        <div class="nav-link" onclick="openDriveModal('⚠️', 'RETRAIT QUALITÉ', 'RETRAIT')">
+          <img class="nav-icon" src="chariot.png" alt="Retrait" loading="lazy" onerror="this.style.opacity='0.3'">
           <span>Retrait</span>
         </div>
 
-        <div class="nav-link" onclick="nav('fds', this)">
-          <img class="nav-icon" src="cible.png" alt="FDS" loading="lazy" data-fallback="cible.png">
+        <div class="nav-link" onclick="openDriveModal('🧪', 'FICHES DE SÉCURITÉ', 'FDS')">
+          <img class="nav-icon" src="cible.png" alt="FDS" loading="lazy" onerror="this.style.opacity='0.3'">
           <span>FDS</span>
         </div>
 
-        <div class="nav-link" onclick="nav('reglementation', this)">
-          <img class="nav-icon" src="liste.png" alt="Règlement" loading="lazy" data-fallback="liste.png">
+        <div class="nav-link" onclick="openDriveModal('⚖️', 'RÉGLEMENTATION', 'REGLEMENTATION')">
+          <img class="nav-icon" src="liste.png" alt="Règlement" loading="lazy" onerror="this.style.opacity='0.3'">
           <span>Règlement</span>
         </div>
       </div>
@@ -547,13 +636,13 @@
     <main class="main-content">
       <header class="topbar">
         <div class="page-title">
-          <img class="topbar-logo" src="241111_Symbole R&B_320x320_RVB.png" alt="Logo" loading="lazy" data-fallback="241111_Symbole R&B_320x320_RVB.png">
+          <img class="topbar-logo" src="241111_Symbole R&B_320x320_RVB.png" alt="Logo" loading="lazy" onerror="this.style.opacity='0.3'">
           <h2 id="title-display">Puzzle QHSE</h2>
         </div>
 
         <div class="actions">
           <div class="btn-icon" title="Retour à l'accueil" onclick="nav('puzzle', document.querySelectorAll('.nav-link')[0])">
-            <img src="maison.png" alt="Accueil" loading="lazy" data-fallback="maison.png">
+            <img src="maison.png" alt="Accueil" loading="lazy" onerror="this.style.opacity='0.3'">
           </div>
         </div>
       </header>
@@ -568,170 +657,104 @@
             </div>
 
             <div class="puzzle-container">
-              <!-- IMPORTANT: maintenant TOUT ouvre la même liste Drive,
-                   tu peux ensuite trier/catégoriser si tu veux -->
-              <div class="puzzle-piece p-red" onclick="openDriveModal('📋', 'PROCEDURES')">
-                <img class="p-icon" src="liste.png" alt="" loading="lazy" data-fallback="liste.png">
+              <div class="puzzle-piece p-red" onclick="openDriveModal('📋', 'PROCÉDURES', 'PROCEDURES')">
+                <img class="p-icon" src="liste.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 PROCEDURES
               </div>
 
-              <div class="puzzle-piece p-cyan" onclick="openDriveModal('📊', 'EVALUATION')">
-                <img class="p-icon" src="cible.png" alt="" loading="lazy" data-fallback="cible.png">
+              <div class="puzzle-piece p-cyan" onclick="openDriveModal('📊', 'ÉVALUATION', 'EVALUATION')">
+                <img class="p-icon" src="cible.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 EVALUATION
               </div>
 
-              <div class="puzzle-piece p-orange" onclick="openDriveModal('📚', 'REFERENTIELS')">
-                <img class="p-icon" src="liste.png" alt="" loading="lazy" data-fallback="liste.png">
+              <div class="puzzle-piece p-orange" onclick="openDriveModal('📚', 'RÉFÉRENTIELS', 'REFERENTIELS')">
+                <img class="p-icon" src="liste.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 REFERENTIELS
               </div>
 
-              <div class="puzzle-piece p-gray" onclick="openDriveModal('👥', 'LISTE PERSONNEL')">
-                <img class="p-icon" src="mains.png" alt="" loading="lazy" data-fallback="mains.png">
+              <div class="puzzle-piece p-gray" onclick="openDriveModal('👥', 'LISTE PERSONNEL', 'PERSONNEL')">
+                <img class="p-icon" src="mains.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 LISTE PERSONNEL<br>AFFICHAGE
               </div>
 
-              <div class="puzzle-piece p-teal" onclick="openDriveModal('♻️', 'SUIVI DES DECHETS')">
-                <img class="p-icon" src="camion.png" alt="" loading="lazy" data-fallback="camion.png">
+              <div class="puzzle-piece p-teal" onclick="openDriveModal('♻️', 'SUIVI DES DÉCHETS', 'DECHETS')">
+                <img class="p-icon" src="camion.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 SUIVI DES DECHETS
               </div>
 
-              <div class="puzzle-piece p-blue" onclick="openDriveModal('📈', 'INDICATEURS')">
-                <img class="p-icon" src="ville.png" alt="" loading="lazy" data-fallback="ville.png">
+              <div class="puzzle-piece p-blue" onclick="openDriveModal('📈', 'INDICATEURS', 'INDICATEURS')">
+                <img class="p-icon" src="ville.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 INDICATEURS
               </div>
 
-              <div class="puzzle-piece p-yellow" onclick="openDriveModal('📺', 'AFFICHAGE')">
-                <img class="p-icon" src="magasin.png" alt="" loading="lazy" data-fallback="magasin.png">
+              <div class="puzzle-piece p-yellow" onclick="openDriveModal('📺', 'AFFICHAGE', 'AFFICHAGE')">
+                <img class="p-icon" src="magasin.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 AFFICHAGE
               </div>
 
-              <div class="puzzle-piece p-magenta" onclick="openDriveModal('🎓', 'FORMATION')">
-                <img class="p-icon" src="conseiller.png" alt="" loading="lazy" data-fallback="conseiller.png">
+              <div class="puzzle-piece p-magenta" onclick="openDriveModal('🎓', 'FORMATION', 'FORMATION')">
+                <img class="p-icon" src="conseiller.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 FORMATION
               </div>
 
-              <div class="puzzle-piece p-lime" onclick="openDriveModal('🏥', 'SUIVI DES AT')">
-                <img class="p-icon" src="ouvrier.png" alt="" loading="lazy" data-fallback="ouvrier.png">
+              <div class="puzzle-piece p-lime" onclick="openDriveModal('🏥', 'SUIVI DES AT', 'AT')">
+                <img class="p-icon" src="ouvrier.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 SUIVI DES AT
               </div>
 
-              <div class="puzzle-piece p-purple" onclick="openDriveModal('⚖️', 'REGLEMENTATION')">
-                <img class="p-icon" src="liste.png" alt="" loading="lazy" data-fallback="liste.png">
+              <div class="puzzle-piece p-purple" onclick="openDriveModal('⚖️', 'RÉGLEMENTATION', 'REGLEMENTATION')">
+                <img class="p-icon" src="liste.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 REGLEMENTATION
               </div>
 
-              <div class="puzzle-piece p-pink" onclick="openDriveModal('🗺️', 'COORDONNEES & PLAN')">
-                <img class="p-icon" src="localisation.png" alt="" loading="lazy" data-fallback="localisation.png">
+              <div class="puzzle-piece p-pink" onclick="openDriveModal('🗺️', 'COORDONNÉES & PLAN', 'COORDONNEES')">
+                <img class="p-icon" src="localisation.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 COORDONNEES &<br>PLAN
               </div>
 
-              <div class="puzzle-piece p-aqua" onclick="openDriveModal('🔍', 'REVUE DIRECTION & AUDIT')">
-                <img class="p-icon" src="cible.png" alt="" loading="lazy" data-fallback="cible.png">
+              <div class="puzzle-piece p-aqua" onclick="openDriveModal('🔍', 'REVUE DIRECTION & AUDIT', 'AUDIT')">
+                <img class="p-icon" src="cible.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 REVUE DIRECTION<br>& AUDIT
               </div>
 
-              <div class="puzzle-piece p-lightyellow" onclick="openDriveModal('🛠️', 'INTERVENTION')">
-                <img class="p-icon" src="transpalette.png" alt="" loading="lazy" data-fallback="transpalette.png">
+              <div class="puzzle-piece p-lightyellow" onclick="openDriveModal('🛠️', 'INTERVENTION', 'INTERVENTION')">
+                <img class="p-icon" src="transpalette.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 INTERVENTION
               </div>
 
-              <div class="puzzle-piece p-darkpurple" onclick="openDriveModal('💬', 'CR REUNION')">
-                <img class="p-icon" src="mains.png" alt="" loading="lazy" data-fallback="mains.png">
+              <div class="puzzle-piece p-darkpurple" onclick="openDriveModal('💬', 'CR RÉUNION', 'REUNION')">
+                <img class="p-icon" src="mains.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 CR REUNION
               </div>
 
-              <div class="puzzle-piece p-lightpurple" onclick="openDriveModal('⚖️', 'REGLEMENTATION (2)')">
-                <img class="p-icon" src="liste.png" alt="" loading="lazy" data-fallback="liste.png">
+              <div class="puzzle-piece p-lightpurple" onclick="openDriveModal('⚖️', 'RÉGLEMENTATION', 'REGLEMENTATION')">
+                <img class="p-icon" src="liste.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 REGLEMENTATION
               </div>
 
-              <div class="puzzle-piece p-wine" onclick="nav('retrait', document.querySelectorAll('.nav-link')[2])">
-                <img class="p-icon" src="chariot.png" alt="" loading="lazy" data-fallback="carton.png">
+              <div class="puzzle-piece p-wine" onclick="openDriveModal('⚠️', 'RETRAIT QUALITÉ', 'RETRAIT')">
+                <img class="p-icon" src="chariot.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 RETRAIT<br>QUALITE
               </div>
 
-              <div class="puzzle-piece p-red" onclick="nav('poi', document.querySelectorAll('.nav-link')[1])">
-                <img class="p-icon" src="usine.png" alt="" loading="lazy" data-fallback="usine.png">
+              <div class="puzzle-piece p-red" onclick="openDriveModal('🔥', 'INCENDIE - POI', 'POI')">
+                <img class="p-icon" src="usine.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 INCENDIE - POI
               </div>
 
-              <div class="puzzle-piece p-lightgray" onclick="openDriveModal('⚠️', 'INCIDENT')">
-                <img class="p-icon" src="cible.png" alt="" loading="lazy" data-fallback="cible.png">
+              <div class="puzzle-piece p-lightgray" onclick="openDriveModal('⚠️', 'INCIDENT', 'INCIDENT')">
+                <img class="p-icon" src="cible.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 INCIDENT
               </div>
 
-              <div class="puzzle-piece p-darkred" onclick="nav('fds', document.querySelectorAll('.nav-link')[3])">
-                <img class="p-icon" src="liste.png" alt="" loading="lazy" data-fallback="liste.png">
+              <div class="puzzle-piece p-darkred" onclick="openDriveModal('🧪', 'FICHE DE SÉCURITÉ', 'FDS')">
+                <img class="p-icon" src="liste.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 FICHE DE SECURITE
               </div>
 
-              <div class="puzzle-piece p-green" onclick="openDriveModal('📄', 'INCIDENT DOCUMENTAIRE')">
-                <img class="p-icon" src="liste.png" alt="" loading="lazy" data-fallback="liste.png">
+              <div class="puzzle-piece p-green" onclick="openDriveModal('📄', 'INCIDENT DOCUMENTAIRE', 'INCIDENT_DOC')">
+                <img class="p-icon" src="liste.png" alt="" loading="lazy" onerror="this.style.opacity='0.3'">
                 INCIDENT<br>DOCUMENTAIRE
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- PAGE POI -->
-        <div id="poi" class="page">
-          <div class="puzzle-wrapper">
-            <div class="puzzle-header">
-              <span class="emoji">🔥</span>
-              <h1>ORGANISATION INCENDIE</h1>
-            </div>
-            <div class="doc-grid">
-              <div class="doc-item" onclick="openDriveModal('🔥','POI - DOCUMENTS')">
-                <h4>Ouvrir les documents POI</h4>
-                <p>Accès à la base Drive (recherche + aperçu intégré)</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- PAGE RETRAIT -->
-        <div id="retrait" class="page">
-          <div class="puzzle-wrapper">
-            <div class="puzzle-header">
-              <span class="emoji">⚠️</span>
-              <h1>RETRAIT QUALITE</h1>
-            </div>
-            <div class="doc-grid">
-              <div class="doc-item" onclick="openDriveModal('⚠️','RETRAIT - DOCUMENTS')">
-                <h4>Ouvrir les documents Retrait</h4>
-                <p>Accès à la base Drive (recherche + aperçu intégré)</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- PAGE FDS -->
-        <div id="fds" class="page">
-          <div class="puzzle-wrapper">
-            <div class="puzzle-header">
-              <span class="emoji">🧪</span>
-              <h1>FICHE DE SECURITE</h1>
-            </div>
-            <div class="doc-grid">
-              <div class="doc-item" onclick="openDriveModal('🧪','FDS - DOCUMENTS')">
-                <h4>Ouvrir les documents FDS</h4>
-                <p>Accès à la base Drive (recherche + aperçu intégré)</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- PAGE REGLEMENTATION -->
-        <div id="reglementation" class="page">
-          <div class="puzzle-wrapper">
-            <div class="puzzle-header">
-              <span class="emoji">⚖️</span>
-              <h1>REGLEMENTATION</h1>
-            </div>
-            <div class="doc-grid">
-              <div class="doc-item" onclick="openDriveModal('⚖️','REGLEMENTATION - DOCUMENTS')">
-                <h4>Ouvrir les documents Réglementation</h4>
-                <p>Accès à la base Drive (recherche + aperçu intégré)</p>
               </div>
             </div>
           </div>
@@ -749,7 +772,7 @@
         <h2 id="modalTitle">DOCUMENTS</h2>
 
         <div class="modal-actions">
-          <button class="modal-btn" id="btnOpenNew" onclick="openCurrentInNewTab()">Ouvrir</button>
+          <button class="modal-btn" id="btnOpenNew" onclick="openCurrentInNewTab()" disabled>Ouvrir</button>
           <button class="modal-btn" onclick="closeModal()">Fermer</button>
         </div>
       </div>
@@ -757,14 +780,20 @@
       <div class="modal-body">
         <div class="modal-left">
           <input id="searchInput" class="search" type="text" placeholder="Rechercher un document..." oninput="renderDocList()">
+          
+          <div class="filter-pills" id="filterPills"></div>
+          
           <div class="doc-list" id="docList"></div>
+          
+          <div class="doc-count" id="docCount"></div>
         </div>
 
         <div class="modal-right">
           <div class="viewer-bar">
-            <div class="viewer-title" id="viewerTitle">Sélectionne un document à gauche</div>
+            <div class="viewer-title" id="viewerTitle">Sélectionnez un document</div>
           </div>
           <div class="viewer-frame">
+            <div class="viewer-loading" id="viewerLoading">Chargement...</div>
             <iframe id="viewerFrame" src=""></iframe>
           </div>
         </div>
@@ -777,7 +806,7 @@
 
   <script>
     /* ==========================
-       1) COLLE ICI TOUS TES LIENS
+       COLLE TES LIENS DRIVE ICI
        ========================== */
     const RAW_LINKS = `
 https://drive.google.com/open?id=1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD&usp=drive_copy
@@ -786,28 +815,23 @@ https://drive.google.com/open?id=1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq&usp=drive_cop
 https://drive.google.com/open?id=1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj&usp=drive_copy
 https://drive.google.com/open?id=1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY&usp=drive_copy
     `.trim();
-    // ⬆️ Remplace ce bloc par TOUS tes liens (tu peux coller 300 lignes)
 
     /* ==========================
        UTILITAIRES DRIVE
        ========================== */
     function extractDriveId(url) {
       if (!url) return null;
-      // open?id=XXXX
       const m1 = url.match(/[?&]id=([^&]+)/);
       if (m1 && m1[1]) return m1[1].trim();
-
-      // file/d/XXXX/
       const m2 = url.match(/\/file\/d\/([^\/]+)/);
       if (m2 && m2[1]) return m2[1].trim();
-
       return null;
     }
 
     function buildDriveUrls(fileId) {
       return {
         preview: `https://drive.google.com/file/d/${fileId}/preview`,
-        view:   `https://drive.google.com/file/d/${fileId}/view?usp=drive_link`
+        view: `https://drive.google.com/file/d/${fileId}/view?usp=drive_link`
       };
     }
 
@@ -826,6 +850,7 @@ https://drive.google.com/open?id=1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY&usp=drive_cop
         out.push({
           id,
           title: `Document ${out.length + 1}`,
+          category: 'Tous',
           viewUrl: u.view,
           previewUrl: u.preview
         });
@@ -833,39 +858,37 @@ https://drive.google.com/open?id=1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY&usp=drive_cop
       return out;
     }
 
-    const DRIVE_DOCS = parseRawLinks(RAW_LINKS);
+    let DRIVE_DOCS = [];
+    let CURRENT_DOC = null;
+    let CURRENT_FILTER = 'Tous';
 
     /* ==========================
-       UI / NAV / LOAD
+       CHARGEMENT
        ========================== */
-    function applyImageFallback(img) {
-      const fallback = img.getAttribute('data-fallback') || "241111_Symbole R&B_320x320_RVB.png";
-      if (!img.dataset.fallbackApplied) {
-        img.dataset.fallbackApplied = "1";
-        img.src = fallback;
-      }
-    }
-
     window.addEventListener('load', function () {
+      document.getElementById('loadingText').textContent = 'Chargement des documents...';
+      
       setTimeout(() => {
-        document.getElementById('loading').classList.add('hidden');
-        document.getElementById('app').classList.add('loaded');
-      }, 650);
+        DRIVE_DOCS = parseRawLinks(RAW_LINKS);
+        
+        document.getElementById('loadingText').textContent = `${DRIVE_DOCS.length} documents chargés`;
+        
+        setTimeout(() => {
+          document.getElementById('loading').classList.add('hidden');
+          document.getElementById('app').classList.add('loaded');
+        }, 500);
+      }, 800);
     });
 
+    /* ==========================
+       NAVIGATION
+       ========================== */
     function nav(id, el) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       const target = document.getElementById(id);
       if (target) target.classList.add('active');
 
-      const titles = {
-        'puzzle': 'Puzzle QHSE',
-        'poi': 'Incendie / POI',
-        'retrait': 'Retrait Qualité',
-        'fds': 'Fiches Sécurité',
-        'reglementation': 'Réglementation'
-      };
-      document.getElementById('title-display').textContent = titles[id] || id.toUpperCase();
+      document.getElementById('title-display').textContent = 'Puzzle QHSE';
 
       document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
       if (el && el.classList.contains('nav-link')) el.classList.add('active');
@@ -876,53 +899,82 @@ https://drive.google.com/open?id=1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY&usp=drive_cop
     /* ==========================
        MODAL DRIVE VIEWER
        ========================== */
-    let CURRENT_DOC = null;
-
-    function openDriveModal(emoji, title) {
+    function openDriveModal(emoji, title, category = 'Tous') {
       document.getElementById('modalEmoji').textContent = emoji;
       document.getElementById('modalTitle').textContent = title;
 
-      // reset
       document.getElementById('searchInput').value = '';
       CURRENT_DOC = null;
-      document.getElementById('viewerTitle').textContent = 'Sélectionne un document à gauche';
+      CURRENT_FILTER = category;
+      
+      document.getElementById('viewerTitle').textContent = 'Sélectionnez un document';
       document.getElementById('viewerFrame').src = '';
       document.getElementById('btnOpenNew').disabled = true;
 
+      renderFilterPills();
       renderDocList();
 
       document.getElementById('modal').classList.add('active');
       document.body.style.overflow = 'hidden';
 
       if (DRIVE_DOCS.length === 0) {
-        showToast("⚠️ Aucun lien Drive détecté. Vérifie RAW_LINKS.");
+        showToast("⚠️ Aucun lien Drive détecté");
       } else {
-        showToast(`✅ ${DRIVE_DOCS.length} documents chargés`);
+        showToast(`✅ ${DRIVE_DOCS.length} documents disponibles`);
       }
     }
 
     function closeModal() {
       document.getElementById('modal').classList.remove('active');
       document.body.style.overflow = '';
-      // stop iframe (évite audio/chargement)
       document.getElementById('viewerFrame').src = '';
+    }
+
+    function renderFilterPills() {
+      const categories = ['Tous', ...new Set(DRIVE_DOCS.map(d => d.category).filter(c => c !== 'Tous'))];
+      const pills = categories.map(cat => 
+        `<div class="filter-pill ${cat === CURRENT_FILTER ? 'active' : ''}" onclick="setFilter('${cat}')">${cat}</div>`
+      ).join('');
+      
+      document.getElementById('filterPills').innerHTML = pills;
+    }
+
+    function setFilter(category) {
+      CURRENT_FILTER = category;
+      renderFilterPills();
+      renderDocList();
     }
 
     function renderDocList() {
       const q = (document.getElementById('searchInput').value || '').toLowerCase();
       const list = document.getElementById('docList');
 
-      const filtered = DRIVE_DOCS.filter(d => d.title.toLowerCase().includes(q) || d.id.toLowerCase().includes(q));
+      let filtered = DRIVE_DOCS;
+      
+      if (CURRENT_FILTER !== 'Tous') {
+        filtered = filtered.filter(d => d.category === CURRENT_FILTER);
+      }
+      
+      if (q) {
+        filtered = filtered.filter(d => 
+          d.title.toLowerCase().includes(q) || 
+          d.id.toLowerCase().includes(q) ||
+          d.category.toLowerCase().includes(q)
+        );
+      }
 
       list.innerHTML = filtered.map(d => `
-        <div class="doc-row" onclick="selectDoc('${d.id}')">
+        <div class="doc-row ${CURRENT_DOC && CURRENT_DOC.id === d.id ? 'selected' : ''}" onclick="selectDoc('${d.id}')">
           <strong>${escapeHtml(d.title)}</strong>
           <small>${d.id}</small>
+          ${d.category !== 'Tous' ? `<span class="category-tag">${d.category}</span>` : ''}
         </div>
       `).join('');
 
+      document.getElementById('docCount').textContent = `${filtered.length} document${filtered.length > 1 ? 's' : ''}`;
+
       if (filtered.length === 0) {
-        list.innerHTML = `<div style="color:#aaa;padding:10px;">Aucun résultat.</div>`;
+        list.innerHTML = `<div style="color:#aaa;padding:10px;text-align:center;">Aucun résultat</div>`;
       }
     }
 
@@ -933,15 +985,28 @@ https://drive.google.com/open?id=1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY&usp=drive_cop
       CURRENT_DOC = doc;
 
       document.getElementById('viewerTitle').textContent = doc.title;
-      document.getElementById('viewerFrame').src = doc.previewUrl;
-
       document.getElementById('btnOpenNew').disabled = false;
-      showToast(`📄 ${doc.title} chargé`);
+      
+      // Show loading
+      const loading = document.getElementById('viewerLoading');
+      loading.classList.add('show');
+      
+      const iframe = document.getElementById('viewerFrame');
+      iframe.src = doc.previewUrl;
+      
+      // Hide loading after iframe loads
+      iframe.onload = () => {
+        setTimeout(() => loading.classList.remove('show'), 500);
+      };
+
+      renderDocList(); // Update selected state
+      showToast(`📄 ${doc.title}`);
     }
 
     function openCurrentInNewTab() {
       if (!CURRENT_DOC) return;
       window.open(CURRENT_DOC.viewUrl, '_blank', 'noopener,noreferrer');
+      showToast(`🔗 Ouvert dans un nouvel onglet`);
     }
 
     /* ==========================
@@ -960,31 +1025,20 @@ https://drive.google.com/open?id=1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY&usp=drive_cop
     });
 
     /* ==========================
-       IMAGES FALLBACK
-       ========================== */
-    document.querySelectorAll('img').forEach(img => {
-      img.addEventListener('error', function () {
-        console.warn('Image non trouvée:', this.getAttribute('src'));
-        applyImageFallback(this);
-      });
-    });
-
-    /* ==========================
        SAFE HTML
        ========================== */
     function escapeHtml(str) {
       return String(str)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
 
-    /* ==========================
-       AUTO: si tu veux renommer
-       ========================== */
-    // Option : si tu as un fichier "noms" plus tard, on pourra associer id -> nom réel.
+    console.log('%c🧩 Portail QHSE Les Mousquetaires', 'color: #E2001A; font-size: 20px; font-weight: bold;');
+    console.log('%cBrignoles - Logistique & QHSE', 'color: #666; font-size: 12px;');
+    console.log(`%c${DRIVE_DOCS.length} documents chargés`, 'color: #10b981; font-weight: bold;');
   </script>
 </body>
 </html>
