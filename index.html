@@ -19,6 +19,16 @@
             --primary: #E2001A;
             --bg-deep: #020203;
         }
+        
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        html {
+            font-size: 14px;
+        }
+        
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-deep);
@@ -26,110 +36,467 @@
             overflow: hidden;
             height: 100vh;
         }
-        .font-rajdhani { font-family: 'Rajdhani', sans-serif; }
         
-        /* Grid background effect */
+        .font-rajdhani { 
+            font-family: 'Rajdhani', sans-serif; 
+        }
+        
+        /* ===== ANIMATED BACKGROUND ===== */
+        @keyframes gridFloat {
+            0%, 100% { 
+                transform: perspective(1000px) rotateX(60deg) translateY(-150px) translateZ(-100px);
+            }
+            50% { 
+                transform: perspective(1000px) rotateX(60deg) translateY(-130px) translateZ(-100px);
+            }
+        }
+        
         .bg-grid {
             position: fixed;
             inset: 0;
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 60px 60px;
-            transform: perspective(1000px) rotateX(60deg) translateY(-150px) translateZ(-100px);
-            mask-image: linear-gradient(to bottom, transparent, black, transparent);
+                linear-gradient(rgba(226, 0, 26, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(226, 0, 26, 0.08) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridFloat 6s ease-in-out infinite;
+            mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
             z-index: -1;
-            opacity: 0.3;
+            opacity: 0.4;
+        }
+
+        /* ===== PARTICLES BACKGROUND ===== */
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(226, 0, 26, 0.6);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(226, 0, 26, 0.8);
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(var(--tx));
+                opacity: 0;
+            }
+        }
+
+        /* ===== LOGO ANIMATIONS ===== */
+        @keyframes logoGlow {
+            0%, 100% {
+                box-shadow: 0 0 12px rgba(226, 0, 26, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(226, 0, 26, 0.8), 0 0 40px rgba(226, 0, 26, 0.4);
+            }
+        }
+
+        @keyframes logoSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .logo-animated {
+            animation: logoGlow 2s ease-in-out infinite;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .logo-animated:hover {
+            animation: logoGlow 2s ease-in-out infinite, logoSpin 20s linear infinite;
+            transform: scale(1.1);
+        }
+
+        /* ===== PUZZLE PIECE ANIMATIONS ===== */
+        @keyframes pieceEntrance {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
 
         .puzzle-piece {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            animation: pieceEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
         }
+
+        .puzzle-piece::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .puzzle-piece::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .puzzle-piece:hover::before {
+            opacity: 1;
+        }
+
+        .puzzle-piece:hover::after {
+            transform: translateX(100%);
+        }
+
         .puzzle-piece:hover {
-            transform: translateY(-5px) scale(1.02);
-            filter: brightness(1.1);
+            transform: translateY(-8px) scale(1.05);
+            filter: brightness(1.15) saturate(1.1);
             z-index: 10;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(226, 0, 26, 0.3);
         }
 
-        /* Glassmorphism */
+        .puzzle-piece:active {
+            transform: translateY(-4px) scale(1.02);
+        }
+
+        /* Stagger animation delays */
+        .puzzle-piece:nth-child(1) { animation-delay: 0.05s; }
+        .puzzle-piece:nth-child(2) { animation-delay: 0.1s; }
+        .puzzle-piece:nth-child(3) { animation-delay: 0.15s; }
+        .puzzle-piece:nth-child(4) { animation-delay: 0.2s; }
+        .puzzle-piece:nth-child(5) { animation-delay: 0.25s; }
+        .puzzle-piece:nth-child(6) { animation-delay: 0.3s; }
+        .puzzle-piece:nth-child(7) { animation-delay: 0.35s; }
+        .puzzle-piece:nth-child(8) { animation-delay: 0.4s; }
+        .puzzle-piece:nth-child(9) { animation-delay: 0.45s; }
+        .puzzle-piece:nth-child(10) { animation-delay: 0.5s; }
+        .puzzle-piece:nth-child(11) { animation-delay: 0.55s; }
+        .puzzle-piece:nth-child(12) { animation-delay: 0.6s; }
+        .puzzle-piece:nth-child(13) { animation-delay: 0.65s; }
+        .puzzle-piece:nth-child(14) { animation-delay: 0.7s; }
+        .puzzle-piece:nth-child(15) { animation-delay: 0.75s; }
+        .puzzle-piece:nth-child(16) { animation-delay: 0.8s; }
+        .puzzle-piece:nth-child(17) { animation-delay: 0.85s; }
+        .puzzle-piece:nth-child(18) { animation-delay: 0.9s; }
+        .puzzle-piece:nth-child(19) { animation-delay: 0.95s; }
+
+        /* ===== GLASSMORPHISM ===== */
         .glass {
-            background: rgba(10, 10, 15, 0.8);
-            backdrop-filter: blur(12px);
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+        /* ===== SCROLLBAR ===== */
+        .custom-scrollbar::-webkit-scrollbar { 
+            width: 6px; 
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track { 
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, var(--primary), #b00015);
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
 
-        .modal-enter { animation: modalFade 0.3s ease-out; }
-        @keyframes modalFade {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+        /* ===== MODAL ANIMATIONS ===== */
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-enter {
+            animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* ===== BUTTON RIPPLE EFFECT ===== */
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-ripple::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-ripple:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* ===== SIDEBAR HOVER EFFECTS ===== */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--primary);
+            transition: height 0.3s ease;
+        }
+
+        .nav-item:hover::before {
+            height: 70%;
+        }
+
+        /* ===== DOCUMENT LIST ANIMATIONS ===== */
+        @keyframes docSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .doc-item {
+            animation: docSlideIn 0.3s ease backwards;
+        }
+
+        .doc-item:nth-child(1) { animation-delay: 0.05s; }
+        .doc-item:nth-child(2) { animation-delay: 0.1s; }
+        .doc-item:nth-child(3) { animation-delay: 0.15s; }
+        .doc-item:nth-child(4) { animation-delay: 0.2s; }
+        .doc-item:nth-child(5) { animation-delay: 0.25s; }
+
+        /* ===== LOADING SPINNER ===== */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        /* ===== PULSE ANIMATION ===== */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(0.95);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* ===== GLOW TEXT ===== */
+        @keyframes textGlow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(226, 0, 26, 0.5);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(226, 0, 26, 0.8), 0 0 30px rgba(226, 0, 26, 0.4);
+            }
+        }
+
+        .text-glow {
+            animation: textGlow 3s ease-in-out infinite;
+        }
+
+        /* ===== BADGE ANIMATION ===== */
+        @keyframes badgeBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .badge-animated {
+            animation: badgeBounce 2s ease-in-out infinite;
+        }
+
+        /* ===== MOBILE NAV ANIMATIONS ===== */
+        .mobile-nav-item {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .mobile-nav-item:active {
+            transform: translateY(-4px) scale(1.1);
+        }
+
+        /* ===== IFRAME LOADING ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* ===== SEARCH INPUT GLOW ===== */
+        .search-input:focus {
+            box-shadow: 0 0 0 2px rgba(226, 0, 26, 0.3), 0 0 20px rgba(226, 0, 26, 0.2);
+        }
+
+        /* ===== TOOLTIP ===== */
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-8px);
+            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            border-radius: 6px;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        .tooltip:hover::before {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
     </style>
 </head>
 <body>
+    <!-- Particles Background -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Grid Background -->
     <div class="bg-grid"></div>
 
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar Desktop -->
-        <aside class="hidden lg:flex w-72 flex-col glass border-r border-white/10 z-20">
-            <div class="p-8 border-b border-white/10">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-[#E2001A] rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(226,0,26,0.4)]">
+        <aside class="hidden lg:flex w-60 flex-col glass border-r border-white/10 z-20">
+            <div class="p-6 border-b border-white/10">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 bg-[#E2001A] rounded-xl flex items-center justify-center logo-animated">
                         <i data-lucide="layout-grid" class="text-white w-6 h-6"></i>
                     </div>
                     <div>
-                        <h1 class="font-rajdhani font-black text-lg uppercase leading-none">Brignoles</h1>
-                        <span class="text-[10px] text-zinc-500 font-bold tracking-widest uppercase">Logistique & QHSE</span>
+                        <h1 class="font-rajdhani font-black text-lg uppercase leading-none tracking-tight">Brignoles</h1>
+                        <span class="text-[9px] text-zinc-500 font-bold tracking-widest uppercase">Logistique & QHSE</span>
                     </div>
                 </div>
             </div>
 
-            <nav class="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
-                <button onclick="window.location.reload()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-[#E2001A]/10 border-l-4 border-[#E2001A] text-white font-bold transition-all">
-                    <i data-lucide="home" class="w-5 h-5"></i>
+            <nav class="flex-1 p-3 space-y-1.5 overflow-y-auto custom-scrollbar">
+                <button onclick="window.location.reload()" class="w-full nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-[#E2001A]/10 border-l-3 border-[#E2001A] text-white text-sm font-bold transition-all btn-ripple">
+                    <i data-lucide="home" class="w-4 h-4"></i>
                     <span>Accueil</span>
                 </button>
                 
-                <div class="pt-4 pb-2 px-4">
-                    <span class="text-[10px] text-zinc-600 font-black tracking-widest uppercase">Accès Rapides</span>
+                <div class="pt-3 pb-1.5 px-3">
+                    <span class="text-[8px] text-zinc-600 font-black tracking-widest uppercase">Accès Rapides</span>
                 </div>
 
-                <a href="#" onclick="openModal('POI', 'Incendie / POI')" class="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="flame" class="w-5 h-5 group-hover:text-[#E2001A]"></i>
+                <a href="#" onclick="openModal('POI', 'Incendie / POI')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
+                    <i data-lucide="flame" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
                     <span>Incendie</span>
                 </a>
-                <a href="#" onclick="openModal('RETRAIT', 'Retrait Qualité')" class="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="truck" class="w-5 h-5 group-hover:text-[#E2001A]"></i>
+                <a href="#" onclick="openModal('RETRAIT', 'Retrait Qualité')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
+                    <i data-lucide="truck" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
                     <span>Retrait</span>
                 </a>
-                <a href="#" onclick="openModal('FDS', 'Fiches de Sécurité')" class="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="flask-conical" class="w-5 h-5 group-hover:text-[#E2001A]"></i>
+                <a href="#" onclick="openModal('FDS', 'Fiches de Sécurité')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
+                    <i data-lucide="flask-conical" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
                     <span>FDS</span>
                 </a>
             </nav>
             
-            <div class="p-4 text-[9px] text-zinc-600 font-bold text-center uppercase tracking-tighter">
+            <div class="p-3 text-[8px] text-zinc-600 font-bold text-center uppercase tracking-tighter">
                 &copy; 2026 Les Mousquetaires
             </div>
         </aside>
 
         <!-- Main Content -->
         <main class="flex-1 flex flex-col relative">
-            <header class="h-20 glass border-b border-white/10 flex items-center justify-between px-6 lg:px-12 sticky top-0 z-10">
-                <div class="flex items-center gap-4">
-                    <i data-lucide="shield-check" class="text-[#E2001A] w-6 h-6 lg:hidden"></i>
-                    <h2 class="font-rajdhani text-2xl font-black uppercase tracking-tight">Portail <span class="text-[#E2001A]">QHSE</span></h2>
+            <header class="h-16 glass border-b border-white/10 flex items-center justify-between px-5 lg:px-10 sticky top-0 z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-[#E2001A]/10 rounded-lg flex items-center justify-center lg:hidden logo-animated">
+                        <i data-lucide="shield-check" class="text-[#E2001A] w-5 h-5"></i>
+                    </div>
+                    <h2 class="font-rajdhani text-2xl font-black uppercase tracking-tight">
+                        Portail <span class="text-[#E2001A] text-glow">QHSE</span>
+                    </h2>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20">
+                        <div class="w-2 h-2 bg-green-500 rounded-full pulse"></div>
+                        <span class="text-[9px] font-black uppercase tracking-widest text-green-500">En ligne</span>
+                    </div>
                 </div>
             </header>
 
-            <div class="flex-1 overflow-y-auto custom-scrollbar p-6 lg:p-12">
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-5 lg:p-10">
                 <div class="max-w-6xl mx-auto">
-                    <div class="text-center mb-12 space-y-4">
-                        <span class="inline-block px-4 py-1 rounded-full bg-[#E2001A]/10 text-[#E2001A] text-[10px] font-black tracking-widest uppercase border border-[#E2001A]/20">Dashboard Opérationnel</span>
-                        <h3 class="text-4xl lg:text-6xl font-black font-rajdhani tracking-tighter uppercase">ACCÈS <span class="text-[#E2001A]">DOCUMENTS</span></h3>
+                    <div class="text-center mb-10 space-y-4">
+                        <span class="badge-animated inline-block px-4 py-1.5 rounded-full bg-[#E2001A]/10 text-[#E2001A] text-[10px] font-black tracking-widest uppercase border border-[#E2001A]/20">
+                            Dashboard Opérationnel
+                        </span>
+                        <h3 class="text-4xl lg:text-6xl font-black font-rajdhani tracking-tighter uppercase">
+                            ACCÈS <span class="text-[#E2001A] text-glow">DOCUMENTS</span>
+                        </h3>
+                        <p class="text-zinc-500 text-sm font-semibold max-w-2xl mx-auto">
+                            Accédez à tous vos documents QHSE en un clic. Base de données complète et mise à jour en temps réel.
+                        </p>
                     </div>
 
                     <!-- Puzzle Grid -->
@@ -143,24 +510,24 @@
 
     <!-- Modal Viewer -->
     <div id="doc-modal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[100] hidden items-center justify-center p-4">
-        <div class="w-full max-w-[95vw] h-[90vh] glass rounded-3xl overflow-hidden flex flex-col modal-enter">
-            <div class="p-6 border-b border-white/10 flex items-center justify-between bg-black/40">
-                <div class="flex items-center gap-4">
-                    <div class="p-2 rounded-lg bg-[#E2001A]/20 text-[#E2001A]">
+        <div class="w-full max-w-[95vw] h-[90vh] glass rounded-2xl overflow-hidden flex flex-col modal-enter shadow-2xl">
+            <div class="p-5 border-b border-white/10 flex items-center justify-between bg-black/40">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl bg-[#E2001A]/20 text-[#E2001A] logo-animated">
                         <i data-lucide="file-text" class="w-6 h-6"></i>
                     </div>
                     <div>
                         <h2 id="modal-title" class="font-rajdhani text-xl font-black uppercase tracking-tight">Documents</h2>
-                        <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Base de données Brignoles</p>
+                        <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-widest">Base de données Brignoles</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <button id="open-new-tab" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-[#E2001A] transition-all text-xs font-bold uppercase">
+                <div class="flex items-center gap-2">
+                    <button id="open-new-tab" class="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 hover:bg-[#E2001A] transition-all text-xs font-bold uppercase btn-ripple tooltip" data-tooltip="Ouvrir dans un nouvel onglet">
                         <i data-lucide="external-link" class="w-4 h-4"></i>
-                        Ouvrir
+                        <span>Ouvrir</span>
                     </button>
-                    <button onclick="closeModal()" class="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center transition-all">
-                        <i data-lucide="x" class="w-6 h-6"></i>
+                    <button onclick="closeModal()" class="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center transition-all tooltip" data-tooltip="Fermer (Echap)">
+                        <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
                 </div>
             </div>
@@ -168,13 +535,17 @@
             <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
                 <!-- Sidebar Documents -->
                 <div class="w-full lg:w-80 border-r border-white/10 flex flex-col bg-black/20">
-                    <div class="p-4 border-b border-white/10">
+                    <div class="p-3 border-b border-white/10">
                         <div class="relative">
-                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4"></i>
-                            <input type="text" id="search-docs" placeholder="Rechercher..." class="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#E2001A]">
+                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4 pointer-events-none"></i>
+                            <input type="text" id="search-docs" placeholder="Rechercher un document..." class="search-input w-full pl-9 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm focus:outline-none transition-all">
+                        </div>
+                        <div class="mt-2 flex items-center justify-between text-[9px] text-zinc-600 font-black uppercase">
+                            <span id="doc-count">0 documents</span>
+                            <span id="doc-filter" class="text-[#E2001A]">Tous</span>
                         </div>
                     </div>
-                    <div id="doc-list" class="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
+                    <div id="doc-list" class="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar">
                         <!-- Liste générée par JS -->
                     </div>
                 </div>
@@ -182,32 +553,65 @@
                 <!-- Iframe Viewer -->
                 <div class="flex-1 bg-zinc-900/50 relative">
                     <div id="viewer-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-zinc-700 space-y-4">
-                        <i data-lucide="file-text" class="w-16 h-16 opacity-10"></i>
-                        <p class="font-rajdhani font-black uppercase tracking-widest opacity-20">Sélectionnez un document</p>
+                        <div class="relative">
+                            <i data-lucide="file-text" class="w-20 h-20 opacity-10"></i>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-16 h-16 border-2 border-zinc-800 border-t-[#E2001A] rounded-full animate-spin opacity-20"></div>
+                            </div>
+                        </div>
+                        <p class="font-rajdhani font-black uppercase tracking-widest opacity-20 text-sm">Sélectionnez un document</p>
                     </div>
-                    <iframe id="viewer-iframe" class="w-full h-full border-none hidden" src=""></iframe>
+                    <div id="viewer-loading" class="absolute inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-10">
+                        <div class="flex flex-col items-center gap-3">
+                            <div class="w-12 h-12 border-3 border-zinc-700 border-t-[#E2001A] rounded-full spinner"></div>
+                            <p class="text-sm font-bold text-zinc-400">Chargement...</p>
+                        </div>
+                    </div>
+                    <iframe id="viewer-iframe" class="w-full h-full border-none hidden fade-in" src=""></iframe>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Mobile Navigation -->
-    <nav class="lg:hidden fixed bottom-0 left-0 right-0 h-16 glass border-t border-white/10 flex items-center justify-around z-50">
-        <button onclick="window.location.reload()" class="flex flex-col items-center gap-1 text-[#E2001A]">
-            <i data-lucide="home" class="w-6 h-6"></i>
-            <span class="text-[8px] font-black uppercase">Accueil</span>
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 h-16 glass border-t border-white/10 flex items-center justify-around z-50 px-2">
+        <button onclick="window.location.reload()" class="mobile-nav-item flex flex-col items-center gap-1 text-[#E2001A] px-3 py-2 rounded-lg">
+            <i data-lucide="home" class="w-5 h-5"></i>
+            <span class="text-[8px] font-black uppercase tracking-wide">Accueil</span>
         </button>
-        <button onclick="openModal('POI', 'POI')" class="flex flex-col items-center gap-1 text-zinc-500">
-            <i data-lucide="flame" class="w-6 h-6"></i>
-            <span class="text-[8px] font-black uppercase">POI</span>
+        <button onclick="openModal('POI', 'POI')" class="mobile-nav-item flex flex-col items-center gap-1 text-zinc-500 hover:text-white px-3 py-2 rounded-lg transition-colors">
+            <i data-lucide="flame" class="w-5 h-5"></i>
+            <span class="text-[8px] font-black uppercase tracking-wide">POI</span>
         </button>
-        <button onclick="openModal('FDS', 'FDS')" class="flex flex-col items-center gap-1 text-zinc-500">
-            <i data-lucide="flask-conical" class="w-6 h-6"></i>
-            <span class="text-[8px] font-black uppercase">FDS</span>
+        <button onclick="openModal('FDS', 'FDS')" class="mobile-nav-item flex flex-col items-center gap-1 text-zinc-500 hover:text-white px-3 py-2 rounded-lg transition-colors">
+            <i data-lucide="flask-conical" class="w-5 h-5"></i>
+            <span class="text-[8px] font-black uppercase tracking-wide">FDS</span>
+        </button>
+        <button onclick="openModal('RETRAIT', 'Retrait')" class="mobile-nav-item flex flex-col items-center gap-1 text-zinc-500 hover:text-white px-3 py-2 rounded-lg transition-colors">
+            <i data-lucide="truck" class="w-5 h-5"></i>
+            <span class="text-[8px] font-black uppercase tracking-wide">Retrait</span>
         </button>
     </nav>
 
     <script>
+        // --- Particles Effect ---
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.setProperty('--tx', (Math.random() - 0.5) * 100 + 'px');
+                particle.style.animation = `particleFloat ${Math.random() * 10 + 15}s linear infinite`;
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(particle);
+            }
+        }
+
         // --- Data ---
         const PIECES = [
             { id: 'PROCEDURES', label: 'Procédures', icon: 'clipboard-list', color: 'from-red-600 to-red-800' },
@@ -242,32 +646,37 @@
         const DOCUMENTS = DRIVE_LINKS.map((id, i) => ({
             id,
             title: `Document QHSE #${i + 1} - Brignoles`,
+            category: ['POI', 'RETRAIT', 'FDS', 'PROCEDURES', 'AUDIT'][i % 5],
             viewUrl: `https://drive.google.com/file/d/${id}/view`,
             previewUrl: `https://drive.google.com/file/d/${id}/preview`
         }));
 
         let activeDoc = null;
 
-        // --- Logic ---
+        // --- Init ---
         function init() {
+            createParticles();
+            
             const grid = document.getElementById('puzzle-grid');
             grid.innerHTML = PIECES.map((p, i) => `
-                <div onclick="openModal('${p.id}', '${p.label}')" class="puzzle-piece group relative aspect-square rounded-2xl p-4 cursor-pointer flex flex-col items-center justify-center text-center gap-3 overflow-hidden border border-white/10 bg-gradient-to-br ${p.color} shadow-2xl">
-                    <div class="p-2.5 rounded-xl bg-white/10 backdrop-blur-md group-hover:scale-110 transition-transform duration-500">
+                <div onclick="openModal('${p.id}', '${p.label}')" class="puzzle-piece group relative aspect-square rounded-2xl p-4 cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 overflow-hidden border border-white/10 bg-gradient-to-br ${p.color} shadow-xl">
+                    <div class="p-3 rounded-xl bg-white/10 backdrop-blur-md group-hover:scale-110 transition-transform duration-500 relative z-10">
                         <i data-lucide="${p.icon}" class="w-8 h-8"></i>
                     </div>
-                    <span class="font-rajdhani font-black text-[10px] uppercase tracking-wider leading-tight">${p.label}</span>
-                    <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <span class="font-rajdhani font-black text-[10px] uppercase tracking-wider leading-tight relative z-10">${p.label}</span>
                 </div>
             `).join('');
+            
             lucide.createIcons();
         }
 
+        // --- Modal ---
         function openModal(id, label) {
             document.getElementById('modal-title').innerText = label;
             document.getElementById('doc-modal').classList.remove('hidden');
             document.getElementById('doc-modal').classList.add('flex');
             renderDocList();
+            lucide.createIcons();
         }
 
         function closeModal() {
@@ -275,45 +684,80 @@
             document.getElementById('doc-modal').classList.remove('flex');
             document.getElementById('viewer-iframe').classList.add('hidden');
             document.getElementById('viewer-placeholder').classList.remove('hidden');
+            document.getElementById('viewer-loading').classList.add('hidden');
             activeDoc = null;
         }
 
+        // --- Doc List ---
         function renderDocList(filter = '') {
             const list = document.getElementById('doc-list');
-            const filtered = DOCUMENTS.filter(d => d.title.toLowerCase().includes(filter.toLowerCase()));
+            const filtered = DOCUMENTS.filter(d => 
+                d.title.toLowerCase().includes(filter.toLowerCase()) ||
+                d.category.toLowerCase().includes(filter.toLowerCase())
+            );
+            
+            document.getElementById('doc-count').textContent = `${filtered.length} document${filtered.length > 1 ? 's' : ''}`;
             
             list.innerHTML = filtered.map(d => `
-                <button onclick="selectDoc('${d.id}')" class="w-full text-left p-3 rounded-xl transition-all border ${activeDoc === d.id ? 'bg-[#E2001A] border-[#E2001A] text-white shadow-lg' : 'bg-white/5 hover:bg-white/10 border-white/5 text-zinc-300'}">
-                    <div class="font-bold text-xs leading-tight mb-1">${d.title}</div>
-                    <div class="text-[9px] opacity-50 uppercase font-black">PDF • ID: ${d.id.substring(0,8)}</div>
+                <button onclick="selectDoc('${d.id}')" class="doc-item w-full text-left p-3 rounded-xl transition-all border ${activeDoc === d.id ? 'bg-[#E2001A] border-[#E2001A] text-white shadow-lg shadow-red-500/20' : 'bg-white/5 hover:bg-white/10 border-white/5 text-zinc-300'}">
+                    <div class="flex items-start justify-between gap-2 mb-1.5">
+                        <div class="font-bold text-xs leading-tight flex-1">${d.title}</div>
+                        <span class="px-2 py-0.5 rounded-full text-[8px] font-black uppercase ${activeDoc === d.id ? 'bg-white/20' : 'bg-[#E2001A]/20 text-[#E2001A]'}">${d.category}</span>
+                    </div>
+                    <div class="text-[8px] opacity-50 uppercase font-black">PDF • ID: ${d.id.substring(0,8)}</div>
                 </button>
             `).join('');
         }
 
+        // --- Select Doc ---
         function selectDoc(id) {
             activeDoc = id;
             const doc = DOCUMENTS.find(d => d.id === id);
             const iframe = document.getElementById('viewer-iframe');
             const placeholder = document.getElementById('viewer-placeholder');
+            const loading = document.getElementById('viewer-loading');
+            
+            // Show loading
+            loading.classList.remove('hidden');
+            loading.classList.add('flex');
             
             placeholder.classList.add('hidden');
-            iframe.classList.remove('hidden');
+            iframe.classList.add('hidden');
+            
+            // Set iframe source
             iframe.src = doc.previewUrl;
+            
+            // Hide loading and show iframe when loaded
+            iframe.onload = () => {
+                setTimeout(() => {
+                    loading.classList.add('hidden');
+                    loading.classList.remove('flex');
+                    iframe.classList.remove('hidden');
+                }, 500);
+            };
 
-            document.getElementById('open-new-tab').onclick = () => window.open(doc.viewUrl, '_blank');
+            document.getElementById('open-new-tab').onclick = () => {
+                window.open(doc.viewUrl, '_blank');
+            };
+            
             renderDocList(document.getElementById('search-docs').value);
         }
 
+        // --- Search ---
         document.getElementById('search-docs').addEventListener('input', (e) => {
             renderDocList(e.target.value);
         });
 
-        // Close on ESC
+        // --- Keyboard ---
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeModal();
         });
 
+        // --- Start ---
         init();
+        
+        console.log('%c🧩 Portail QHSE Les Mousquetaires', 'color: #E2001A; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px rgba(226,0,26,0.5);');
+        console.log('%c✨ Version Ultra Premium avec animations avancées', 'color: #10b981; font-size: 12px; font-weight: bold;');
     </script>
 </body>
 </html>
