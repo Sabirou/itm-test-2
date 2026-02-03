@@ -19,6 +19,9 @@
             --primary: #E2001A;
             --bg-deep: #020203;
         }
+        html {
+            font-size: 18px;
+        }
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-deep);
@@ -35,7 +38,7 @@
             background-image: 
                 linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 60px 60px;
+            background-size: 80px 80px;
             transform: perspective(1000px) rotateX(60deg) translateY(-150px) translateZ(-100px);
             mask-image: linear-gradient(to bottom, transparent, black, transparent);
             z-index: -1;
@@ -46,19 +49,19 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .puzzle-piece:hover {
-            transform: translateY(-5px) scale(1.02);
-            filter: brightness(1.1);
+            transform: translateY(-8px) scale(1.03);
+            filter: brightness(1.15);
             z-index: 10;
         }
 
         /* Glassmorphism */
         .glass {
-            background: rgba(10, 10, 15, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
         }
 
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 10px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
@@ -74,66 +77,66 @@
 
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar Desktop -->
-        <aside class="hidden lg:flex w-72 flex-col glass border-r border-white/10 z-20">
-            <div class="p-8 border-b border-white/10">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 bg-[#E2001A] rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(226,0,26,0.4)]">
-                        <i data-lucide="layout-grid" class="text-white w-6 h-6"></i>
+        <aside class="hidden lg:flex w-[340px] flex-col glass border-r border-white/10 z-20">
+            <div class="p-10 border-b border-white/10">
+                <div class="flex items-center gap-5">
+                    <div class="w-16 h-16 bg-[#E2001A] rounded-2xl flex items-center justify-center shadow-[0_0_25px_rgba(226,0,26,0.5)]">
+                        <i data-lucide="layout-grid" class="text-white w-9 h-9"></i>
                     </div>
                     <div>
-                        <h1 class="font-rajdhani font-black text-lg uppercase leading-none">Brignoles</h1>
-                        <span class="text-[10px] text-zinc-500 font-bold tracking-widest uppercase">Logistique & QHSE</span>
+                        <h1 class="font-rajdhani font-black text-3xl uppercase leading-none">Brignoles</h1>
+                        <span class="text-base text-zinc-500 font-bold tracking-widest uppercase">Logistique & QHSE</span>
                     </div>
                 </div>
             </div>
 
-            <nav class="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
-                <button onclick="window.location.reload()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-[#E2001A]/10 border-l-4 border-[#E2001A] text-white font-bold transition-all">
-                    <i data-lucide="home" class="w-5 h-5"></i>
+            <nav class="flex-1 p-6 space-y-3 overflow-y-auto custom-scrollbar">
+                <button onclick="window.location.reload()" class="w-full flex items-center gap-5 px-6 py-5 rounded-2xl bg-[#E2001A]/10 border-l-4 border-[#E2001A] text-white font-bold transition-all text-xl">
+                    <i data-lucide="home" class="w-8 h-8"></i>
                     <span>Accueil</span>
                 </button>
                 
-                <div class="pt-4 pb-2 px-4">
-                    <span class="text-[10px] text-zinc-600 font-black tracking-widest uppercase">Accès Rapides</span>
+                <div class="pt-8 pb-4 px-6">
+                    <span class="text-base text-zinc-600 font-black tracking-widest uppercase">Accès Rapides</span>
                 </div>
 
-                <a href="#" onclick="openModal('POI', 'Incendie / POI')" class="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="flame" class="w-5 h-5 group-hover:text-[#E2001A]"></i>
+                <a href="#" onclick="openModal('POI', 'Incendie / POI')" class="flex items-center gap-5 px-6 py-5 rounded-2xl text-zinc-400 font-bold hover:bg-white/5 hover:text-white transition-all group text-xl">
+                    <i data-lucide="flame" class="w-8 h-8 group-hover:text-[#E2001A]"></i>
                     <span>Incendie</span>
                 </a>
-                <a href="#" onclick="openModal('RETRAIT', 'Retrait Qualité')" class="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="truck" class="w-5 h-5 group-hover:text-[#E2001A]"></i>
+                <a href="#" onclick="openModal('RETRAIT', 'Retrait Qualité')" class="flex items-center gap-5 px-6 py-5 rounded-2xl text-zinc-400 font-bold hover:bg-white/5 hover:text-white transition-all group text-xl">
+                    <i data-lucide="truck" class="w-8 h-8 group-hover:text-[#E2001A]"></i>
                     <span>Retrait</span>
                 </a>
-                <a href="#" onclick="openModal('FDS', 'Fiches de Sécurité')" class="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="flask-conical" class="w-5 h-5 group-hover:text-[#E2001A]"></i>
+                <a href="#" onclick="openModal('FDS', 'Fiches de Sécurité')" class="flex items-center gap-5 px-6 py-5 rounded-2xl text-zinc-400 font-bold hover:bg-white/5 hover:text-white transition-all group text-xl">
+                    <i data-lucide="flask-conical" class="w-8 h-8 group-hover:text-[#E2001A]"></i>
                     <span>FDS</span>
                 </a>
             </nav>
             
-            <div class="p-4 text-[9px] text-zinc-600 font-bold text-center uppercase tracking-tighter">
+            <div class="p-8 text-base text-zinc-600 font-bold text-center uppercase tracking-tighter">
                 &copy; 2026 Les Mousquetaires
             </div>
         </aside>
 
         <!-- Main Content -->
         <main class="flex-1 flex flex-col relative">
-            <header class="h-20 glass border-b border-white/10 flex items-center justify-between px-6 lg:px-12 sticky top-0 z-10">
-                <div class="flex items-center gap-4">
-                    <i data-lucide="shield-check" class="text-[#E2001A] w-6 h-6 lg:hidden"></i>
-                    <h2 class="font-rajdhani text-2xl font-black uppercase tracking-tight">Portail <span class="text-[#E2001A]">QHSE</span></h2>
+            <header class="h-28 glass border-b border-white/10 flex items-center justify-between px-10 lg:px-16 sticky top-0 z-10">
+                <div class="flex items-center gap-5">
+                    <i data-lucide="shield-check" class="text-[#E2001A] w-10 h-10 lg:hidden"></i>
+                    <h2 class="font-rajdhani text-4xl font-black uppercase tracking-tight">Portail <span class="text-[#E2001A]">QHSE</span></h2>
                 </div>
             </header>
 
-            <div class="flex-1 overflow-y-auto custom-scrollbar p-6 lg:p-12">
-                <div class="max-w-6xl mx-auto">
-                    <div class="text-center mb-12 space-y-4">
-                        <span class="inline-block px-4 py-1 rounded-full bg-[#E2001A]/10 text-[#E2001A] text-[10px] font-black tracking-widest uppercase border border-[#E2001A]/20">Dashboard Opérationnel</span>
-                        <h3 class="text-4xl lg:text-6xl font-black font-rajdhani tracking-tighter uppercase">ACCÈS <span class="text-[#E2001A]">DOCUMENTS</span></h3>
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-10 lg:p-16">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center mb-16 space-y-6">
+                        <span class="inline-block px-8 py-3 rounded-full bg-[#E2001A]/10 text-[#E2001A] text-base font-black tracking-widest uppercase border border-[#E2001A]/20">Dashboard Opérationnel</span>
+                        <h3 class="text-6xl lg:text-8xl font-black font-rajdhani tracking-tighter uppercase">ACCÈS <span class="text-[#E2001A]">DOCUMENTS</span></h3>
                     </div>
 
                     <!-- Puzzle Grid -->
-                    <div id="puzzle-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    <div id="puzzle-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                         <!-- Les pièces seront générées par JS -->
                     </div>
                 </div>
@@ -142,48 +145,48 @@
     </div>
 
     <!-- Modal Viewer -->
-    <div id="doc-modal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[100] hidden items-center justify-center p-4">
-        <div class="w-full max-w-[95vw] h-[90vh] glass rounded-3xl overflow-hidden flex flex-col modal-enter">
-            <div class="p-6 border-b border-white/10 flex items-center justify-between bg-black/40">
-                <div class="flex items-center gap-4">
-                    <div class="p-2 rounded-lg bg-[#E2001A]/20 text-[#E2001A]">
-                        <i data-lucide="file-text" class="w-6 h-6"></i>
+    <div id="doc-modal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[100] hidden items-center justify-center p-8">
+        <div class="w-full max-w-[95vw] h-[92vh] glass rounded-3xl overflow-hidden flex flex-col modal-enter">
+            <div class="p-10 border-b border-white/10 flex items-center justify-between bg-black/40">
+                <div class="flex items-center gap-6">
+                    <div class="p-4 rounded-2xl bg-[#E2001A]/20 text-[#E2001A]">
+                        <i data-lucide="file-text" class="w-10 h-10"></i>
                     </div>
                     <div>
-                        <h2 id="modal-title" class="font-rajdhani text-xl font-black uppercase tracking-tight">Documents</h2>
-                        <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Base de données Brignoles</p>
+                        <h2 id="modal-title" class="font-rajdhani text-3xl font-black uppercase tracking-tight">Documents</h2>
+                        <p class="text-base text-zinc-500 font-bold uppercase tracking-widest">Base de données Brignoles</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <button id="open-new-tab" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-[#E2001A] transition-all text-xs font-bold uppercase">
-                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                <div class="flex items-center gap-5">
+                    <button id="open-new-tab" class="hidden sm:flex items-center gap-3 px-8 py-4 rounded-2xl bg-white/5 hover:bg-[#E2001A] transition-all text-base font-bold uppercase">
+                        <i data-lucide="external-link" class="w-6 h-6"></i>
                         Ouvrir
                     </button>
-                    <button onclick="closeModal()" class="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center transition-all">
-                        <i data-lucide="x" class="w-6 h-6"></i>
+                    <button onclick="closeModal()" class="w-14 h-14 rounded-full hover:bg-white/10 flex items-center justify-center transition-all">
+                        <i data-lucide="x" class="w-9 h-9"></i>
                     </button>
                 </div>
             </div>
 
             <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
                 <!-- Sidebar Documents -->
-                <div class="w-full lg:w-80 border-r border-white/10 flex flex-col bg-black/20">
-                    <div class="p-4 border-b border-white/10">
+                <div class="w-full lg:w-[420px] border-r border-white/10 flex flex-col bg-black/20">
+                    <div class="p-6 border-b border-white/10">
                         <div class="relative">
-                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4"></i>
-                            <input type="text" id="search-docs" placeholder="Rechercher..." class="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#E2001A]">
+                            <i data-lucide="search" class="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-500 w-6 h-6"></i>
+                            <input type="text" id="search-docs" placeholder="Rechercher..." class="w-full pl-14 pr-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-lg focus:outline-none focus:ring-2 focus:ring-[#E2001A]">
                         </div>
                     </div>
-                    <div id="doc-list" class="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
+                    <div id="doc-list" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
                         <!-- Liste générée par JS -->
                     </div>
                 </div>
 
                 <!-- Iframe Viewer -->
                 <div class="flex-1 bg-zinc-900/50 relative">
-                    <div id="viewer-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-zinc-700 space-y-4">
-                        <i data-lucide="file-text" class="w-16 h-16 opacity-10"></i>
-                        <p class="font-rajdhani font-black uppercase tracking-widest opacity-20">Sélectionnez un document</p>
+                    <div id="viewer-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-zinc-700 space-y-6">
+                        <i data-lucide="file-text" class="w-32 h-32 opacity-10"></i>
+                        <p class="font-rajdhani font-black uppercase tracking-widest opacity-20 text-2xl">Sélectionnez un document</p>
                     </div>
                     <iframe id="viewer-iframe" class="w-full h-full border-none hidden" src=""></iframe>
                 </div>
@@ -192,18 +195,18 @@
     </div>
 
     <!-- Mobile Navigation -->
-    <nav class="lg:hidden fixed bottom-0 left-0 right-0 h-16 glass border-t border-white/10 flex items-center justify-around z-50">
-        <button onclick="window.location.reload()" class="flex flex-col items-center gap-1 text-[#E2001A]">
-            <i data-lucide="home" class="w-6 h-6"></i>
-            <span class="text-[8px] font-black uppercase">Accueil</span>
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 h-24 glass border-t border-white/10 flex items-center justify-around z-50">
+        <button onclick="window.location.reload()" class="flex flex-col items-center gap-2 text-[#E2001A]">
+            <i data-lucide="home" class="w-10 h-10"></i>
+            <span class="text-sm font-black uppercase">Accueil</span>
         </button>
-        <button onclick="openModal('POI', 'POI')" class="flex flex-col items-center gap-1 text-zinc-500">
-            <i data-lucide="flame" class="w-6 h-6"></i>
-            <span class="text-[8px] font-black uppercase">POI</span>
+        <button onclick="openModal('POI', 'POI')" class="flex flex-col items-center gap-2 text-zinc-500">
+            <i data-lucide="flame" class="w-10 h-10"></i>
+            <span class="text-sm font-black uppercase">POI</span>
         </button>
-        <button onclick="openModal('FDS', 'FDS')" class="flex flex-col items-center gap-1 text-zinc-500">
-            <i data-lucide="flask-conical" class="w-6 h-6"></i>
-            <span class="text-[8px] font-black uppercase">FDS</span>
+        <button onclick="openModal('FDS', 'FDS')" class="flex flex-col items-center gap-2 text-zinc-500">
+            <i data-lucide="flask-conical" class="w-10 h-10"></i>
+            <span class="text-sm font-black uppercase">FDS</span>
         </button>
     </nav>
 
@@ -252,11 +255,11 @@
         function init() {
             const grid = document.getElementById('puzzle-grid');
             grid.innerHTML = PIECES.map((p, i) => `
-                <div onclick="openModal('${p.id}', '${p.label}')" class="puzzle-piece group relative aspect-square rounded-2xl p-4 cursor-pointer flex flex-col items-center justify-center text-center gap-3 overflow-hidden border border-white/10 bg-gradient-to-br ${p.color} shadow-2xl">
-                    <div class="p-2.5 rounded-xl bg-white/10 backdrop-blur-md group-hover:scale-110 transition-transform duration-500">
-                        <i data-lucide="${p.icon}" class="w-8 h-8"></i>
+                <div onclick="openModal('${p.id}', '${p.label}')" class="puzzle-piece group relative aspect-square rounded-3xl p-8 cursor-pointer flex flex-col items-center justify-center text-center gap-5 overflow-hidden border border-white/10 bg-gradient-to-br ${p.color} shadow-2xl">
+                    <div class="p-5 rounded-2xl bg-white/10 backdrop-blur-md group-hover:scale-110 transition-transform duration-500">
+                        <i data-lucide="${p.icon}" class="w-14 h-14"></i>
                     </div>
-                    <span class="font-rajdhani font-black text-[10px] uppercase tracking-wider leading-tight">${p.label}</span>
+                    <span class="font-rajdhani font-black text-lg uppercase tracking-wider leading-tight">${p.label}</span>
                     <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </div>
             `).join('');
@@ -283,9 +286,9 @@
             const filtered = DOCUMENTS.filter(d => d.title.toLowerCase().includes(filter.toLowerCase()));
             
             list.innerHTML = filtered.map(d => `
-                <button onclick="selectDoc('${d.id}')" class="w-full text-left p-3 rounded-xl transition-all border ${activeDoc === d.id ? 'bg-[#E2001A] border-[#E2001A] text-white shadow-lg' : 'bg-white/5 hover:bg-white/10 border-white/5 text-zinc-300'}">
-                    <div class="font-bold text-xs leading-tight mb-1">${d.title}</div>
-                    <div class="text-[9px] opacity-50 uppercase font-black">PDF • ID: ${d.id.substring(0,8)}</div>
+                <button onclick="selectDoc('${d.id}')" class="w-full text-left p-5 rounded-2xl transition-all border ${activeDoc === d.id ? 'bg-[#E2001A] border-[#E2001A] text-white shadow-lg' : 'bg-white/5 hover:bg-white/10 border-white/5 text-zinc-300'}">
+                    <div class="font-bold text-lg leading-tight mb-2">${d.title}</div>
+                    <div class="text-sm opacity-50 uppercase font-black">PDF • ID: ${d.id.substring(0,8)}</div>
                 </button>
             `).join('');
         }
