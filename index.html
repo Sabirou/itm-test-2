@@ -3,37 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portail QHSE - Les Mousquetaires Brignoles</title>
+    <title>Portail QHSE - Brignoles</title>
     
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=Rajdhani:wght@500;700;900&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
             --primary: #E2001A;
-            --secondary: #C8B39F;
             --bg-deep: #020203;
-            --teal: #1f7a8c;
         }
-        
         * {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        
-        html {
-            font-size: 14px;
-        }
-        
+        html { font-size: 14px; }
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-deep);
@@ -41,21 +26,13 @@
             overflow: hidden;
             height: 100vh;
         }
+        .font-rajdhani { font-family: 'Rajdhani', sans-serif; }
         
-        .font-rajdhani { 
-            font-family: 'Rajdhani', sans-serif; 
-        }
-        
-        /* ===== ANIMATED BACKGROUND ===== */
+        /* Animated Background */
         @keyframes gridFloat {
-            0%, 100% { 
-                transform: perspective(1000px) rotateX(60deg) translateY(-150px) translateZ(-100px);
-            }
-            50% { 
-                transform: perspective(1000px) rotateX(60deg) translateY(-130px) translateZ(-100px);
-            }
+            0%, 100% { transform: perspective(1000px) rotateX(60deg) translateY(-150px) translateZ(-100px); }
+            50% { transform: perspective(1000px) rotateX(60deg) translateY(-130px) translateZ(-100px); }
         }
-        
         .bg-grid {
             position: fixed;
             inset: 0;
@@ -69,14 +46,13 @@
             opacity: 0.4;
         }
 
-        /* ===== PARTICLES BACKGROUND ===== */
+        /* Particles */
         .particles {
             position: fixed;
             inset: 0;
             z-index: -2;
             overflow: hidden;
         }
-        
         .particle {
             position: absolute;
             width: 2px;
@@ -85,69 +61,38 @@
             border-radius: 50%;
             box-shadow: 0 0 10px rgba(226, 0, 26, 0.8);
         }
-
         @keyframes particleFloat {
-            0% {
-                transform: translateY(0) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(var(--tx));
-                opacity: 0;
-            }
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(var(--tx)); opacity: 0; }
         }
 
-        /* ===== LOGO ANIMATIONS ===== */
+        /* Logo */
         @keyframes logoGlow {
-            0%, 100% {
-                box-shadow: 0 0 12px rgba(226, 0, 26, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 25px rgba(226, 0, 26, 0.8), 0 0 40px rgba(226, 0, 26, 0.4);
-            }
+            0%, 100% { box-shadow: 0 0 12px rgba(226, 0, 26, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(226, 0, 26, 0.8), 0 0 40px rgba(226, 0, 26, 0.4); }
         }
-
-        @keyframes logoSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         .logo-animated {
             animation: logoGlow 2s ease-in-out infinite;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
         .logo-animated:hover {
-            animation: logoGlow 2s ease-in-out infinite, logoSpin 20s linear infinite;
             transform: scale(1.1);
         }
 
-        /* ===== CARD ANIMATIONS ===== */
-        @keyframes cardEntrance {
-            from {
-                opacity: 0;
-                transform: scale(0.8) translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+        /* Puzzle Pieces */
+        @keyframes pieceEntrance {
+            from { opacity: 0; transform: scale(0.8) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
-
-        .card-item {
+        .puzzle-piece {
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             overflow: hidden;
-            animation: cardEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+            animation: pieceEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
         }
-
-        .card-item::before {
+        .puzzle-piece::before {
             content: '';
             position: absolute;
             inset: 0;
@@ -155,8 +100,7 @@
             opacity: 0;
             transition: opacity 0.4s ease;
         }
-
-        .card-item::after {
+        .puzzle-piece::after {
             content: '';
             position: absolute;
             top: -50%;
@@ -167,49 +111,38 @@
             transform: translateX(-100%);
             transition: transform 0.6s ease;
         }
-
-        .card-item:hover::before {
-            opacity: 1;
-        }
-
-        .card-item:hover::after {
-            transform: translateX(100%);
-        }
-
-        .card-item:hover {
+        .puzzle-piece:hover::before { opacity: 1; }
+        .puzzle-piece:hover::after { transform: translateX(100%); }
+        .puzzle-piece:hover {
             transform: translateY(-8px) scale(1.05);
             filter: brightness(1.15) saturate(1.1);
             z-index: 10;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(226, 0, 26, 0.3);
         }
+        .puzzle-piece:active { transform: translateY(-4px) scale(1.02); }
 
-        .card-item:active {
-            transform: translateY(-4px) scale(1.02);
-        }
+        /* Stagger animation */
+        .puzzle-piece:nth-child(1) { animation-delay: 0.05s; }
+        .puzzle-piece:nth-child(2) { animation-delay: 0.1s; }
+        .puzzle-piece:nth-child(3) { animation-delay: 0.15s; }
+        .puzzle-piece:nth-child(4) { animation-delay: 0.2s; }
+        .puzzle-piece:nth-child(5) { animation-delay: 0.25s; }
+        .puzzle-piece:nth-child(6) { animation-delay: 0.3s; }
+        .puzzle-piece:nth-child(7) { animation-delay: 0.35s; }
+        .puzzle-piece:nth-child(8) { animation-delay: 0.4s; }
+        .puzzle-piece:nth-child(9) { animation-delay: 0.45s; }
+        .puzzle-piece:nth-child(10) { animation-delay: 0.5s; }
+        .puzzle-piece:nth-child(11) { animation-delay: 0.55s; }
+        .puzzle-piece:nth-child(12) { animation-delay: 0.6s; }
+        .puzzle-piece:nth-child(13) { animation-delay: 0.65s; }
+        .puzzle-piece:nth-child(14) { animation-delay: 0.7s; }
+        .puzzle-piece:nth-child(15) { animation-delay: 0.75s; }
+        .puzzle-piece:nth-child(16) { animation-delay: 0.8s; }
+        .puzzle-piece:nth-child(17) { animation-delay: 0.85s; }
+        .puzzle-piece:nth-child(18) { animation-delay: 0.9s; }
+        .puzzle-piece:nth-child(19) { animation-delay: 0.95s; }
 
-        /* Stagger animation delays */
-        .card-item:nth-child(1) { animation-delay: 0.05s; }
-        .card-item:nth-child(2) { animation-delay: 0.1s; }
-        .card-item:nth-child(3) { animation-delay: 0.15s; }
-        .card-item:nth-child(4) { animation-delay: 0.2s; }
-        .card-item:nth-child(5) { animation-delay: 0.25s; }
-        .card-item:nth-child(6) { animation-delay: 0.3s; }
-        .card-item:nth-child(7) { animation-delay: 0.35s; }
-        .card-item:nth-child(8) { animation-delay: 0.4s; }
-        .card-item:nth-child(9) { animation-delay: 0.45s; }
-        .card-item:nth-child(10) { animation-delay: 0.5s; }
-        .card-item:nth-child(11) { animation-delay: 0.55s; }
-        .card-item:nth-child(12) { animation-delay: 0.6s; }
-        .card-item:nth-child(13) { animation-delay: 0.65s; }
-        .card-item:nth-child(14) { animation-delay: 0.7s; }
-        .card-item:nth-child(15) { animation-delay: 0.75s; }
-        .card-item:nth-child(16) { animation-delay: 0.8s; }
-        .card-item:nth-child(17) { animation-delay: 0.85s; }
-        .card-item:nth-child(18) { animation-delay: 0.9s; }
-        .card-item:nth-child(19) { animation-delay: 0.95s; }
-        .card-item:nth-child(20) { animation-delay: 1.0s; }
-
-        /* ===== GLASSMORPHISM ===== */
+        /* Glass */
         .glass {
             background: rgba(10, 10, 15, 0.85);
             backdrop-filter: blur(20px) saturate(180%);
@@ -217,11 +150,8 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
-        /* ===== SCROLLBAR ===== */
-        .custom-scrollbar::-webkit-scrollbar { 
-            width: 6px; 
-            height: 6px;
-        }
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { 
             background: rgba(255, 255, 255, 0.05);
             border-radius: 3px;
@@ -234,235 +164,90 @@
             background: var(--primary);
         }
 
-        /* ===== MODAL ANIMATIONS ===== */
+        /* Modal */
         @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9) translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            from { opacity: 0; transform: scale(0.9) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
-
         .modal-enter {
             animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* ===== BUTTON RIPPLE EFFECT ===== */
-        .btn-ripple {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-ripple::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn-ripple:active::after {
-            width: 300px;
-            height: 300px;
-        }
-
-        /* ===== SIDEBAR MENU ANIMATIONS ===== */
-        .nav-item {
-            position: relative;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 3px;
-            height: 0;
-            background: var(--primary);
-            transition: height 0.3s ease;
-        }
-
-        .nav-item:hover::before {
-            height: 70%;
-        }
-
-        .submenu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-
-        .submenu.open {
-            max-height: 500px;
-        }
-
-        .submenu-item {
-            opacity: 0;
-            transform: translateX(-10px);
-            transition: all 0.2s ease;
-        }
-
-        .submenu.open .submenu-item {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* ===== DOCUMENT LIST ANIMATIONS ===== */
+        /* Document Links */
         @keyframes docSlideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
-
         .doc-item {
             animation: docSlideIn 0.3s ease backwards;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
         .doc-item:nth-child(1) { animation-delay: 0.05s; }
         .doc-item:nth-child(2) { animation-delay: 0.1s; }
         .doc-item:nth-child(3) { animation-delay: 0.15s; }
         .doc-item:nth-child(4) { animation-delay: 0.2s; }
         .doc-item:nth-child(5) { animation-delay: 0.25s; }
-
-        /* ===== LOADING SPINNER ===== */
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .doc-item:nth-child(6) { animation-delay: 0.3s; }
+        .doc-item:nth-child(7) { animation-delay: 0.35s; }
+        .doc-item:nth-child(8) { animation-delay: 0.4s; }
+        
+        .doc-item:hover {
+            transform: translateX(8px);
+            background: rgba(226, 0, 26, 0.15) !important;
         }
 
-        .spinner {
-            animation: spin 1s linear infinite;
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .breadcrumb-separator {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .breadcrumb-link {
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .breadcrumb-link:hover {
+            color: var(--primary);
+        }
+        .breadcrumb-current {
+            color: var(--primary);
         }
 
-        /* ===== PULSE ANIMATION ===== */
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.8;
-                transform: scale(0.95);
-            }
-        }
-
-        .pulse {
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        /* ===== GLOW TEXT ===== */
-        @keyframes textGlow {
-            0%, 100% {
-                text-shadow: 0 0 10px rgba(226, 0, 26, 0.5);
-            }
-            50% {
-                text-shadow: 0 0 20px rgba(226, 0, 26, 0.8), 0 0 30px rgba(226, 0, 26, 0.4);
-            }
-        }
-
-        .text-glow {
-            animation: textGlow 3s ease-in-out infinite;
-        }
-
-        /* ===== BADGE ANIMATION ===== */
-        @keyframes badgeBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
-
-        .badge-animated {
-            animation: badgeBounce 2s ease-in-out infinite;
-        }
-
-        /* ===== MOBILE NAV ANIMATIONS ===== */
-        .mobile-nav-item {
+        /* Back button */
+        .btn-back {
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
-        .mobile-nav-item:active {
-            transform: translateY(-4px) scale(1.1);
-        }
-
-        /* ===== IFRAME LOADING ===== */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease;
-        }
-
-        /* ===== SEARCH INPUT GLOW ===== */
-        .search-input:focus {
-            box-shadow: 0 0 0 2px rgba(226, 0, 26, 0.3), 0 0 20px rgba(226, 0, 26, 0.2);
-        }
-
-        /* ===== TOOLTIP ===== */
-        .tooltip {
-            position: relative;
-        }
-
-        .tooltip::before {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-8px);
-            padding: 6px 12px;
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            border-radius: 6px;
-            font-size: 11px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s, transform 0.3s;
-            z-index: 1000;
-        }
-
-        .tooltip:hover::before {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        /* ===== DROPDOWN ARROW ROTATION ===== */
-        .arrow-rotate {
-            transition: transform 0.3s ease;
-        }
-
-        .arrow-rotate.open {
-            transform: rotate(180deg);
+        .btn-back:hover {
+            transform: translateX(-4px);
+            background: rgba(226, 0, 26, 0.2) !important;
         }
     </style>
 </head>
 <body>
     <!-- Particles Background -->
     <div class="particles" id="particles"></div>
-    
-    <!-- Grid Background -->
     <div class="bg-grid"></div>
 
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar Desktop -->
-        <aside class="hidden lg:flex w-72 flex-col glass border-r border-white/10 z-20">
+        <aside class="hidden lg:flex w-60 flex-col glass border-r border-white/10 z-20">
             <div class="p-6 border-b border-white/10">
                 <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 bg-[#E2001A] rounded-xl flex items-center justify-center logo-animated">
+                    <div class="w-11 h-11 bg-[#E2001A] rounded-xl flex items-center justify-center logo-animated cursor-pointer" onclick="goHome()">
                         <i data-lucide="layout-grid" class="text-white w-6 h-6"></i>
                     </div>
                     <div>
@@ -473,156 +258,26 @@
             </div>
 
             <nav class="flex-1 p-3 space-y-1.5 overflow-y-auto custom-scrollbar">
-                <button onclick="showSection('home')" class="w-full nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-[#E2001A]/10 border-l-3 border-[#E2001A] text-white text-sm font-bold transition-all btn-ripple">
+                <button onclick="goHome()" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-[#E2001A]/10 border-l-3 border-[#E2001A] text-white text-sm font-bold transition-all">
                     <i data-lucide="home" class="w-4 h-4"></i>
                     <span>Accueil</span>
                 </button>
                 
                 <div class="pt-3 pb-1.5 px-3">
-                    <span class="text-[8px] text-zinc-600 font-black tracking-widest uppercase">Navigation Principale</span>
+                    <span class="text-[8px] text-zinc-600 font-black tracking-widest uppercase">Accès Rapides</span>
                 </div>
 
-                <!-- 1. Procédures -->
-                <div class="nav-group">
-                    <button onclick="toggleSubmenu('submenu-procedures')" class="nav-item w-full flex items-center justify-between gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                        <div class="flex items-center gap-2.5">
-                            <i class="fas fa-book w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                            <span>Procédures</span>
-                        </div>
-                        <i class="fas fa-chevron-down text-xs arrow-rotate" id="arrow-procedures"></i>
-                    </button>
-                    <div id="submenu-procedures" class="submenu pl-6 mt-1">
-                        <a href="#" onclick="openModal('PROCEDURES_APPRO', 'Approvisionnement')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">Approvisionnement</a>
-                        <a href="#" onclick="openModal('PROCEDURES_EXPLOITATION', 'Exploitation')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">Exploitation</a>
-                        <a href="#" onclick="openModal('PROCEDURES_TRANSPORT', 'Transport')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">Transport</a>
-                        <a href="#" onclick="openModal('PROCEDURES_SPDV', 'SPDV')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">SPDV</a>
-                        <a href="#" onclick="openModal('PROCEDURES_PDV', 'PDV')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">PDV</a>
-                        <a href="#" onclick="openModal('PROCEDURES_COMPTA', 'Comptabilité')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">Comptabilité</a>
-                        <a href="#" onclick="openModal('PROCEDURES_INFO', 'Informatique')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">Informatique</a>
-                        <a href="#" onclick="openModal('PROCEDURES_RH', 'RH')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">Ressources Humaines</a>
-                        <a href="#" onclick="openModal('PROCEDURES_QUALITE', 'Qualité/Hygiène')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">Qualité/Hygiène</a>
-                        <a href="#" onclick="openModal('PROCEDURES_SECURITE', 'Sécurité/Environnement')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">Sécurité/Environnement</a>
-                        <a href="#" onclick="openModal('PROCEDURES_TECHNIQUE', 'Technique')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">Technique</a>
-                    </div>
-                </div>
-
-                <!-- 2. Évaluation Personnel -->
-                <a href="#" onclick="openModal('EVALUATION', 'Évaluation Personnel')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="target" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Évaluation Personnel</span>
-                </a>
-
-                <!-- 3. Référentiels -->
-                <a href="#" onclick="openModal('REFERENTIELS', 'Référentiels')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="book-open" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Référentiels</span>
-                </a>
-
-                <!-- 4. Liste Personnel -->
-                <a href="#" onclick="openModal('PERSONNEL', 'Liste Personnel')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="users" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Liste Personnel</span>
-                </a>
-
-                <!-- 5. Suivi des Déchets -->
-                <a href="#" onclick="openModal('DECHETS', 'Suivi Déchets')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="recycle" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Suivi Déchets</span>
-                </a>
-
-                <!-- 6. Indicateurs -->
-                <div class="nav-group">
-                    <button onclick="toggleSubmenu('submenu-indicateurs')" class="nav-item w-full flex items-center justify-between gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                        <div class="flex items-center gap-2.5">
-                            <i data-lucide="bar-chart-3" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                            <span>Indicateurs</span>
-                        </div>
-                        <i class="fas fa-chevron-down text-xs arrow-rotate" id="arrow-indicateurs"></i>
-                    </button>
-                    <div id="submenu-indicateurs" class="submenu pl-6 mt-1">
-                        <a href="#" onclick="openModal('KPI_EXPLOITATION', 'KPI Exploitation')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">Exploitation</a>
-                        <a href="#" onclick="openModal('KPI_SPDV', 'KPI SPDV')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">SPDV</a>
-                        <a href="#" onclick="openModal('KPI_TRANSPORT', 'KPI Transport')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">Transport</a>
-                        <a href="#" onclick="openModal('KPI_QUALITE', 'KPI Qualité')" class="submenu-item block px-3 py-2 text-xs text-zinc-500 hover:text-[#E2001A] transition-colors">Qualité</a>
-                    </div>
-                </div>
-
-                <!-- 7. Affichage -->
-                <a href="#" onclick="openModal('AFFICHAGE', 'Affichage')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i class="fas fa-bullhorn w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Affichage</span>
-                </a>
-
-                <!-- 8. Formation -->
-                <a href="#" onclick="openModal('FORMATION', 'Formation')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="graduation-cap" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Formation</span>
-                </a>
-
-                <!-- 9. Suivi des AT -->
-                <a href="#" onclick="openModal('AT', 'Suivi AT')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="activity" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Suivi des AT</span>
-                </a>
-
-                <!-- 10. Règlementation -->
-                <a href="#" onclick="openModal('REGLEMENTATION', 'Règlementation')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="scale" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Règlementation</span>
-                </a>
-
-                <!-- 11. Revue Direction & Audit -->
-                <a href="#" onclick="openModal('AUDIT', 'Revue Direction & Audit')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="search-code" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Revue & Audit</span>
-                </a>
-
-                <!-- 12. Coordonnées & Plans -->
-                <a href="#" onclick="openModal('COORDONNEES', 'Coordonnées & Plans')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="map-pin" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Coordonnées & Plans</span>
-                </a>
-
-                <!-- 13. Intervention -->
-                <a href="#" onclick="openModal('INTERVENTION', 'Intervention')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="wrench" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Intervention</span>
-                </a>
-
-                <!-- 14. CR Réunion -->
-                <a href="#" onclick="openModal('REUNION', 'CR Réunion')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="message-square" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>CR Réunion</span>
-                </a>
-
-                <!-- 15. Fiches de Sécurité -->
-                <a href="#" onclick="openModal('FDS', 'Fiches de Sécurité')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="flask-conical" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Fiches Sécurité</span>
-                </a>
-
-                <!-- 16. Retrait Qualité -->
-                <a href="#" onclick="openModal('RETRAIT', 'Retrait Qualité')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="truck" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Retrait Qualité</span>
-                </a>
-
-                <!-- 17. Incident -->
-                <a href="#" onclick="openModal('INCIDENT', 'Incident')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="alert-triangle" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Incident</span>
-                </a>
-
-                <!-- 18. Incendie - POI -->
-                <a href="#" onclick="openModal('POI', 'Incendie - POI')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
+                <a href="#" onclick="openSection('POI')" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
                     <i data-lucide="flame" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Incendie - POI</span>
+                    <span>Incendie</span>
                 </a>
-
-                <!-- 19. Incident Documentaire -->
-                <a href="#" onclick="openModal('INCIDENT_DOC', 'Incident Documentaire')" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="file-text" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Incident Doc.</span>
+                <a href="#" onclick="openSection('RETRAIT')" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
+                    <i data-lucide="truck" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
+                    <span>Retrait</span>
+                </a>
+                <a href="#" onclick="openSection('FDS')" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
+                    <i data-lucide="flask-conical" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
+                    <span>FDS</span>
                 </a>
             </nav>
             
@@ -635,139 +290,54 @@
         <main class="flex-1 flex flex-col relative">
             <header class="h-16 glass border-b border-white/10 flex items-center justify-between px-5 lg:px-10 sticky top-0 z-10">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-[#E2001A]/10 rounded-lg flex items-center justify-center lg:hidden logo-animated">
+                    <div class="w-10 h-10 bg-[#E2001A]/10 rounded-lg flex items-center justify-center lg:hidden logo-animated cursor-pointer" onclick="goHome()">
                         <i data-lucide="shield-check" class="text-[#E2001A] w-5 h-5"></i>
                     </div>
                     <h2 class="font-rajdhani text-2xl font-black uppercase tracking-tight">
-                        Portail <span class="text-[#E2001A] text-glow">QHSE</span>
+                        Portail <span class="text-[#E2001A]">QHSE</span>
                     </h2>
                 </div>
                 
-                <div class="flex items-center gap-2">
-                    <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20">
-                        <div class="w-2 h-2 bg-green-500 rounded-full pulse"></div>
-                        <span class="text-[9px] font-black uppercase tracking-widest text-green-500">En ligne</span>
-                    </div>
-                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5">
-                        <i data-lucide="user" class="w-4 h-4 text-zinc-400"></i>
-                        <span class="text-xs font-bold text-zinc-400 hidden md:inline">Utilisateur</span>
-                    </div>
+                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-green-500">En ligne</span>
                 </div>
             </header>
 
-            <div id="main-content" class="flex-1 overflow-y-auto custom-scrollbar p-5 lg:p-10">
-                <!-- SECTION ACCUEIL -->
-                <section id="home-section">
-                    <div class="max-w-7xl mx-auto">
-                        <div class="text-center mb-10 space-y-4">
-                            <span class="badge-animated inline-block px-4 py-1.5 rounded-full bg-[#E2001A]/10 text-[#E2001A] text-[10px] font-black tracking-widest uppercase border border-[#E2001A]/20">
-                                🧩 Puzzle Qualité - Dashboard Opérationnel
-                            </span>
-                            <h3 class="text-4xl lg:text-6xl font-black font-rajdhani tracking-tighter uppercase">
-                                PORTAIL <span class="text-[#E2001A] text-glow">QHSE</span>
-                            </h3>
-                            <p class="text-zinc-500 text-sm font-semibold max-w-2xl mx-auto">
-                                Accédez à tous vos documents et outils QHSE en un clic. Base de données complète et mise à jour en temps réel.
-                            </p>
-                        </div>
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-5 lg:p-10">
+                <div class="max-w-6xl mx-auto">
+                    <!-- Breadcrumb -->
+                    <div id="breadcrumb" class="breadcrumb mb-6"></div>
 
-                        <!-- Grid Cards - PUZZLE QUALITE -->
-                        <div id="cards-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                            <!-- Les cartes seront générées par JS -->
-                        </div>
-                    </div>
-                </section>
+                    <!-- Content Container -->
+                    <div id="content-area"></div>
+                </div>
             </div>
         </main>
     </div>
 
-    <!-- Modal Viewer -->
-    <div id="doc-modal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-[100] hidden items-center justify-center p-4">
-        <div class="w-full max-w-[95vw] h-[90vh] glass rounded-2xl overflow-hidden flex flex-col modal-enter shadow-2xl">
-            <div class="p-5 border-b border-white/10 flex items-center justify-between bg-black/40">
-                <div class="flex items-center gap-3">
-                    <div class="p-2.5 rounded-xl bg-[#E2001A]/20 text-[#E2001A] logo-animated">
-                        <i data-lucide="file-text" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <h2 id="modal-title" class="font-rajdhani text-xl font-black uppercase tracking-tight">Documents</h2>
-                        <p class="text-[9px] text-zinc-500 font-bold uppercase tracking-widest">Base de données Brignoles</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button id="open-new-tab" class="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 hover:bg-[#E2001A] transition-all text-xs font-bold uppercase btn-ripple tooltip" data-tooltip="Ouvrir dans un nouvel onglet">
-                        <i data-lucide="external-link" class="w-4 h-4"></i>
-                        <span>Ouvrir</span>
-                    </button>
-                    <button onclick="closeModal()" class="w-9 h-9 rounded-full hover:bg-white/10 flex items-center justify-center transition-all tooltip" data-tooltip="Fermer (Echap)">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
-                <!-- Sidebar Documents -->
-                <div class="w-full lg:w-80 border-r border-white/10 flex flex-col bg-black/20">
-                    <div class="p-3 border-b border-white/10">
-                        <div class="relative">
-                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4 pointer-events-none"></i>
-                            <input type="text" id="search-docs" placeholder="Rechercher un document..." class="search-input w-full pl-9 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm focus:outline-none transition-all">
-                        </div>
-                        <div class="mt-2 flex items-center justify-between text-[9px] text-zinc-600 font-black uppercase">
-                            <span id="doc-count">0 documents</span>
-                            <span id="doc-filter" class="text-[#E2001A]">Tous</span>
-                        </div>
-                    </div>
-                    <div id="doc-list" class="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar">
-                        <!-- Liste générée par JS -->
-                    </div>
-                </div>
-
-                <!-- Iframe Viewer -->
-                <div class="flex-1 bg-zinc-900/50 relative">
-                    <div id="viewer-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-zinc-700 space-y-4">
-                        <div class="relative">
-                            <i data-lucide="file-text" class="w-20 h-20 opacity-10"></i>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="w-16 h-16 border-2 border-zinc-800 border-t-[#E2001A] rounded-full animate-spin opacity-20"></div>
-                            </div>
-                        </div>
-                        <p class="font-rajdhani font-black uppercase tracking-widest opacity-20 text-sm">Sélectionnez un document</p>
-                    </div>
-                    <div id="viewer-loading" class="absolute inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-10">
-                        <div class="flex flex-col items-center gap-3">
-                            <div class="w-12 h-12 border-3 border-zinc-700 border-t-[#E2001A] rounded-full spinner"></div>
-                            <p class="text-sm font-bold text-zinc-400">Chargement...</p>
-                        </div>
-                    </div>
-                    <iframe id="viewer-iframe" class="w-full h-full border-none hidden fade-in" src=""></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Mobile Navigation -->
     <nav class="lg:hidden fixed bottom-0 left-0 right-0 h-16 glass border-t border-white/10 flex items-center justify-around z-50 px-2">
-        <button onclick="showSection('home')" class="mobile-nav-item flex flex-col items-center gap-1 text-[#E2001A] px-3 py-2 rounded-lg">
+        <button onclick="goHome()" class="flex flex-col items-center gap-1 text-[#E2001A] px-3 py-2 rounded-lg">
             <i data-lucide="home" class="w-5 h-5"></i>
             <span class="text-[8px] font-black uppercase tracking-wide">Accueil</span>
         </button>
-        <button onclick="openModal('POI', 'POI')" class="mobile-nav-item flex flex-col items-center gap-1 text-zinc-500 hover:text-white px-3 py-2 rounded-lg transition-colors">
+        <button onclick="openSection('POI')" class="flex flex-col items-center gap-1 text-zinc-500 hover:text-white px-3 py-2 rounded-lg transition-colors">
             <i data-lucide="flame" class="w-5 h-5"></i>
             <span class="text-[8px] font-black uppercase tracking-wide">POI</span>
         </button>
-        <button onclick="openModal('FDS', 'FDS')" class="mobile-nav-item flex flex-col items-center gap-1 text-zinc-500 hover:text-white px-3 py-2 rounded-lg transition-colors">
+        <button onclick="openSection('FDS')" class="flex flex-col items-center gap-1 text-zinc-500 hover:text-white px-3 py-2 rounded-lg transition-colors">
             <i data-lucide="flask-conical" class="w-5 h-5"></i>
             <span class="text-[8px] font-black uppercase tracking-wide">FDS</span>
         </button>
-        <button onclick="openModal('RETRAIT', 'Retrait')" class="mobile-nav-item flex flex-col items-center gap-1 text-zinc-500 hover:text-white px-3 py-2 rounded-lg transition-colors">
+        <button onclick="openSection('RETRAIT')" class="flex flex-col items-center gap-1 text-zinc-500 hover:text-white px-3 py-2 rounded-lg transition-colors">
             <i data-lucide="truck" class="w-5 h-5"></i>
             <span class="text-[8px] font-black uppercase tracking-wide">Retrait</span>
         </button>
     </nav>
 
     <script>
-        // --- Particles Effect ---
+        // === PARTICLES ===
         function createParticles() {
             const container = document.getElementById('particles');
             const particleCount = 30;
@@ -785,201 +355,617 @@
             }
         }
 
-        // --- Data - PUZZLE QUALITE (extrait du PowerPoint) ---
-        const CARDS = [
-            { id: 'PROCEDURES', label: 'Procédures', icon: 'clipboard-list', color: 'from-red-600 to-red-800', description: 'Toutes les procédures opérationnelles' },
-            { id: 'EVALUATION', label: 'Évaluation', icon: 'target', color: 'from-emerald-500 to-emerald-700', description: 'Évaluation du personnel' },
-            { id: 'REFERENTIELS', label: 'Référentiels', icon: 'book-open', color: 'from-orange-500 to-orange-700', description: 'Base référentiels qualité' },
-            { id: 'PERSONNEL', label: 'Liste Personnel', icon: 'users', color: 'from-zinc-600 to-zinc-800', description: 'Annuaire du personnel' },
-            { id: 'AFFICHAGE', label: 'Affichage', icon: 'monitor', color: 'from-yellow-400 to-yellow-600', description: 'Affichage obligatoire' },
-            { id: 'DECHETS', label: 'Suivi Déchets', icon: 'recycle', color: 'from-teal-600 to-teal-800', description: 'Gestion des déchets' },
-            { id: 'INDICATEURS', label: 'Indicateurs', icon: 'bar-chart-3', color: 'from-blue-600 to-blue-800', description: 'KPI et statistiques' },
-            { id: 'FORMATION', label: 'Formation', icon: 'graduation-cap', color: 'from-fuchsia-600 to-fuchsia-800', description: 'Planning formations' },
-            { id: 'AT', label: 'Suivi AT', icon: 'activity', color: 'from-lime-500 to-lime-700', description: 'Accidents du travail' },
-            { id: 'REGLEMENTATION', label: 'Règlementation', icon: 'scale', color: 'from-indigo-600 to-indigo-800', description: 'Textes réglementaires' },
-            { id: 'AUDIT', label: 'Revue & Audit', icon: 'search-code', color: 'from-cyan-500 to-cyan-700', description: 'Audits & revue direction' },
-            { id: 'COORDONNEES', label: 'Coordonnées', icon: 'map-pin', color: 'from-pink-600 to-pink-800', description: 'Coordonnées & plans' },
-            { id: 'INTERVENTION', label: 'Intervention', icon: 'wrench', color: 'from-amber-400 to-amber-600', description: 'Suivi interventions' },
-            { id: 'FDS', label: 'Fiches Séc.', icon: 'flask-conical', color: 'from-red-700 to-red-950', description: 'Fiches de sécurité' },
-            { id: 'REUNION', label: 'CR Réunion', icon: 'message-square', color: 'from-violet-800 to-indigo-950', description: 'Comptes-rendus' },
-            { id: 'RETRAIT', label: 'Retrait Qualité', icon: 'truck', color: 'from-rose-900 to-red-950', description: 'Retrait qualité produits' },
-            { id: 'INCIDENT', label: 'Incident', icon: 'alert-triangle', color: 'from-zinc-300 to-zinc-500', description: 'Incidents & anomalies' },
-            { id: 'POI', label: 'Incendie - POI', icon: 'flame', color: 'from-red-600 to-red-900', description: 'POI & sécurité incendie' },
-            { id: 'INCIDENT_DOC', label: 'Incident Doc', icon: 'file-text', color: 'from-green-600 to-green-800', description: 'Incidents documentaires' },
-        ];
-
-        // VOS 5 FICHIERS GOOGLE DRIVE
-        const DRIVE_LINKS = [
-            "1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD",
-            "1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d",
-            "1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq",
-            "1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj",
-            "1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY"
-        ];
-
-        // Génération de documents pour chaque catégorie
-        const DOCUMENTS = [];
-        CARDS.forEach(card => {
-            // Chaque catégorie a 3-5 documents associés avec vos vrais liens Google Drive
-            const numDocs = Math.floor(Math.random() * 3) + 3;
-            for (let i = 0; i < numDocs; i++) {
-                const driveId = DRIVE_LINKS[Math.floor(Math.random() * DRIVE_LINKS.length)];
-                DOCUMENTS.push({
-                    id: `${card.id}_${i}`,
-                    driveId: driveId,
-                    title: `${card.label} - Document ${i + 1}`,
-                    category: card.id,
-                    viewUrl: `https://drive.google.com/file/d/${driveId}/view`,
-                    previewUrl: `https://drive.google.com/file/d/${driveId}/preview`
-                });
+        // === DATA STRUCTURE ===
+        const PUZZLE_DATA = {
+            PROCEDURES: {
+                label: 'Procédures',
+                icon: 'clipboard-list',
+                color: 'from-red-600 to-red-800',
+                items: [
+                    { type: 'section', label: 'Exploitation', items: [
+                        { type: 'doc', title: 'Procédure Réception', code: 'BGN P REC 01', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'Procédure Stockage', code: 'I REC 03', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                        { type: 'doc', title: 'Procédure Préparation', code: 'BGN P PREP 01', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'Procédure Chargement', code: 'P CHA 01', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' }
+                    ]},
+                    { type: 'section', label: 'Approvisionnement', items: [
+                        { type: 'doc', title: 'Retour Fournisseur', code: 'P QUA 06', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                        { type: 'doc', title: 'Litiges Réception', code: 'N-P REC 03', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'Gestion Casse', code: 'P QUA 10', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' }
+                    ]},
+                    { type: 'section', label: 'Transport', items: [
+                        { type: 'doc', title: 'Procédure Livraison PDV', code: 'P TRA 01', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'Lavage Semis', code: 'BGN E TEC 01', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                        { type: 'doc', title: 'Contrôle Ensemble Routier', code: 'E TRA 01', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' }
+                    ]},
+                    { type: 'section', label: 'Qualité Hygiène', items: [
+                        { type: 'doc', title: 'Gestion Documentaire', code: 'BGN P QUA 01', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'Contrôle Préparation', code: 'I QUA 03', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                        { type: 'doc', title: 'Métrologie', code: 'BGN P HYG 02', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'Plan Nettoyage', code: 'BGN P TEC 05', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' }
+                    ]}
+                ]
+            },
+            POI: {
+                label: 'Incendie / POI',
+                icon: 'flame',
+                color: 'from-red-600 to-red-900',
+                items: [
+                    { type: 'doc', title: 'Plan Organisation Interne (POI)', code: 'BGN D TEC 01.01', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                    { type: 'doc', title: 'FR PDG - Poste de Garde', code: 'P TEC 03 bis', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                    { type: 'doc', title: 'FR DOI - Directeur Opérations Internes', code: 'P TEC 03 bis', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                    { type: 'doc', title: 'FR RC - Responsable de Comptage', code: 'P TEC 03 bis', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                    { type: 'doc', title: 'FR RCOM - Responsable Communication', code: 'P TEC 03 bis', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                    { type: 'doc', title: 'FR ROBS - Responsable Observation', code: 'P TEC 03 bis', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                    { type: 'doc', title: 'FR AOI - Assistant Opération Interne', code: 'P TEC 03 bis', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                    { type: 'doc', title: 'Fiche Réflexe POI Total', code: 'P TEC 03 bis', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' }
+                ]
+            },
+            RETRAIT: {
+                label: 'Retrait Qualité',
+                icon: 'truck',
+                color: 'from-rose-900 to-red-950',
+                items: [
+                    { type: 'doc', title: 'Base de données Retrait Qualité', code: 'Dossier', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                    { type: 'doc', title: 'Suivi Retrait avec Désactivation EAN13', code: 'BGN E QUA 01', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                    { type: 'doc', title: 'Suivi Retrait sans Désactivation EAN13', code: 'BGN E QUA 01', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                    { type: 'doc', title: 'Procédure Retrait-Rappel', code: 'BGN P QUA 02.02', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                    { type: 'doc', title: 'Tableau Synthétique Gestion Retrait', code: 'N-P QUA 01', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' }
+                ]
+            },
+            FDS: {
+                label: 'Fiches de Sécurité',
+                icon: 'flask-conical',
+                color: 'from-red-700 to-red-950',
+                items: [
+                    { type: 'doc', title: 'Base de données FDS', code: 'Liste Excel', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                    { type: 'doc', title: 'SST: Que faire en cas de...', code: 'Guide SST', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' }
+                ]
+            },
+            EVALUATION: {
+                label: 'Évaluation',
+                icon: 'target',
+                color: 'from-emerald-500 to-emerald-700',
+                items: [
+                    { type: 'section', label: 'Préparateurs', items: [
+                        { type: 'doc', title: 'Évaluation Mensuelle Préparateurs', code: 'BGN P QUA 05', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'Fiche Interview Préparateur', code: 'Audit', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                        { type: 'doc', title: 'Suivi Évaluations', code: 'BGN E QUA 09', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' }
+                    ]},
+                    { type: 'section', label: 'Réceptionnaires', items: [
+                        { type: 'doc', title: 'Procédure Évaluation', code: 'P QUA 13', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                        { type: 'doc', title: 'Fiche Interview Réceptionnaire', code: 'Audit', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' }
+                    ]},
+                    { type: 'section', label: 'Chargeurs', items: [
+                        { type: 'doc', title: 'Fiche Interview Chargeur', code: 'Audit', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'Évaluation à venir', code: 'En cours', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' }
+                    ]},
+                    { type: 'section', label: 'Caristes', items: [
+                        { type: 'doc', title: 'Fiche Interview Cariste', code: 'Audit', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' }
+                    ]}
+                ]
+            },
+            REFERENTIELS: {
+                label: 'Référentiels',
+                icon: 'book-open',
+                color: 'from-orange-500 to-orange-700',
+                items: [
+                    { type: 'section', label: 'Hygiène & Propreté', items: [
+                        { type: 'doc', title: 'Référentiel HP', code: 'ITM LAI', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                        { type: 'doc', title: 'Grille Audit HP', code: 'QHSE', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                        { type: 'doc', title: 'Fiches Manuel HP', code: 'Ensemble', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' }
+                    ]},
+                    { type: 'section', label: 'Certification', items: [
+                        { type: 'doc', title: 'Référentiel EURACRP', code: 'ITM LAI', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                        { type: 'doc', title: 'Fiches Manuel Certification', code: 'Ensemble', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'Grille Audit Certification', code: 'QHSE', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' }
+                    ]},
+                    { type: 'section', label: 'Sécurité', items: [
+                        { type: 'doc', title: 'Document Unique', code: 'Dossier', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                        { type: 'doc', title: 'Référentiel Sécurité', code: 'ITM LAI', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'Grille Audit Sécurité', code: 'Tour base', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' }
+                    ]},
+                    { type: 'section', label: 'HACCP', items: [
+                        { type: 'doc', title: 'Manuel HACCP', code: 'Complet', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'Bonnes Pratiques', code: 'Liste', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                        { type: 'doc', title: 'PMS - Plan Maîtrise Sanitaire', code: 'Document', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' }
+                    ]},
+                    { type: 'section', label: 'Environnement', items: [
+                        { type: 'doc', title: 'Référentiel Environnement', code: 'ITM LAI', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'Grille Audit Environnement', code: 'Mai 2021', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' }
+                    ]}
+                ]
+            },
+            PERSONNEL: {
+                label: 'Personnel',
+                icon: 'users',
+                color: 'from-zinc-600 to-zinc-800',
+                items: [
+                    { type: 'doc', title: 'Liste Personnel SST & EPI', code: 'BGN D RH 02', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                    { type: 'doc', title: 'Membres CSSCT', code: 'D RHM 06', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                    { type: 'doc', title: 'Délégués Personnel', code: 'Liste', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                    { type: 'doc', title: 'Permanence Samedi', code: 'Planning 2025', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' }
+                ]
+            },
+            DECHETS: {
+                label: 'Déchets',
+                icon: 'recycle',
+                color: 'from-teal-600 to-teal-800',
+                items: [
+                    { type: 'doc', title: 'Registre des Déchets', code: 'Dossier', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                    { type: 'doc', title: 'Instruction Tri des Déchets', code: 'BGN I ENV 01', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                    { type: 'doc', title: 'Mode Opératoire BSD', code: 'Instruction', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                    { type: 'doc', title: 'Affichage Tri Déchets', code: 'Visuel', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' }
+                ]
+            },
+            INDICATEURS: {
+                label: 'Indicateurs',
+                icon: 'bar-chart-3',
+                color: 'from-blue-600 to-blue-800',
+                items: [
+                    { type: 'section', label: 'Certification', items: [
+                        { type: 'doc', title: 'TDB Général Certification', code: 'Tableau', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'Taux Fiabilité Préparation', code: 'Indicateur', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                        { type: 'doc', title: 'Taux Manquant', code: 'Indicateur', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'Taux RAQ', code: 'Indicateur', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                        { type: 'doc', title: 'Taux BNC', code: 'Indicateur', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' }
+                    ]},
+                    { type: 'section', label: 'Hygiène & Propreté', items: [
+                        { type: 'doc', title: 'T°C Réception', code: 'TDB', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'T°C Entrepôt', code: 'TDB', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                        { type: 'doc', title: 'T°C Livraison Frais', code: 'TDB', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'T°C Livraison Gel', code: 'TDB', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' }
+                    ]},
+                    { type: 'section', label: 'Exploitation', items: [
+                        { type: 'doc', title: 'Productivité', code: 'TDB', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                        { type: 'doc', title: 'Volumes', code: 'TDB', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'OQP', code: 'TDB', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' }
+                    ]},
+                    { type: 'section', label: 'SPDV', items: [
+                        { type: 'doc', title: 'Top Ten PDV', code: 'Valorisation', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'Réclamations PDV', code: 'Suivi', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' }
+                    ]},
+                    { type: 'section', label: 'Transport', items: [
+                        { type: 'doc', title: 'Retards Livraison', code: 'Suivi', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                        { type: 'doc', title: 'Dysfonctionnements Chauffeurs', code: 'Suivi', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' }
+                    ]}
+                ]
+            },
+            AFFICHAGE: {
+                label: 'Affichage',
+                icon: 'monitor',
+                color: 'from-yellow-400 to-yellow-600',
+                items: [
+                    { type: 'doc', title: 'Lettre Engagement Direction QHSE', code: 'Affichage', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                    { type: 'doc', title: 'Lettre Engagement Sécurité', code: 'BGN D SEC 05', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                    { type: 'doc', title: 'Lettre Engagement Qualité', code: 'BGN D HYG 02', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                    { type: 'doc', title: '10 Règles d\'Or Manager', code: 'Affichage', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                    { type: 'doc', title: 'Zoom QHSE', code: 'Communication', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' }
+                ]
+            },
+            FORMATION: {
+                label: 'Formation',
+                icon: 'graduation-cap',
+                color: 'from-fuchsia-600 to-fuchsia-800',
+                items: [
+                    { type: 'section', label: 'Intégration', items: [
+                        { type: 'doc', title: 'Programme Intégration', code: 'BGN P RH 02', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                        { type: 'doc', title: 'Fiche Suivi Intégration', code: 'E RHM 04', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'Consignes Hygiène à signer', code: 'BGN E RH 01', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                        { type: 'doc', title: 'Consignes Sécurité à signer', code: 'BGN E RH 02', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' }
+                    ]},
+                    { type: 'section', label: 'Autorisation Conduite', items: [
+                        { type: 'doc', title: 'Formation AC Cat 1', code: 'Module 3', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'Formation AC Cat 3', code: 'Module', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                        { type: 'doc', title: 'Formation AC Cat 5', code: 'Module', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' }
+                    ]},
+                    { type: 'section', label: 'Modules Formation', items: [
+                        { type: 'doc', title: 'Formation Hygiène & Propreté', code: 'Module 4', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                        { type: 'doc', title: 'Formation HP Chauffeurs', code: 'Spécifique', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' }
+                    ]},
+                    { type: 'section', label: 'Guides Bonnes Pratiques', items: [
+                        { type: 'doc', title: 'GBP Cariste Frais', code: 'N-BP ENT 01', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'GBP Cariste Sec', code: 'N-BP ENT 02', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                        { type: 'doc', title: 'GBP Chargement Frais', code: 'N-BP CHA 01', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'GBP Chargement Sec', code: 'N-BP CHA 02', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                        { type: 'doc', title: 'GBP Filmage Palette', code: 'N-BP PRE 02', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                        { type: 'doc', title: 'GBP Montage Palette', code: 'N-BP PRE 05', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' }
+                    ]},
+                    { type: 'section', label: 'Quiz & Tests', items: [
+                        { type: 'doc', title: 'Quiz Certification', code: 'E RHM 18', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                        { type: 'doc', title: 'Test Hygiène & Propreté', code: 'E RHM 21', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'Test AC Cat 1', code: 'E RHM 22', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                        { type: 'doc', title: 'Test AC Cat 3 & 5', code: 'E RHM 24', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                        { type: 'doc', title: 'Test Sécurité', code: 'E RHM 27', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' }
+                    ]}
+                ]
+            },
+            AT: {
+                label: 'Suivi AT',
+                icon: 'activity',
+                color: 'from-lime-500 to-lime-700',
+                items: [
+                    { type: 'doc', title: 'Procédure Gestion AT', code: 'BGN P RH 03', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                    { type: 'doc', title: 'Fiche Analyse AT', code: 'BGN E RH 12', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                    { type: 'doc', title: 'Registre AT', code: 'Saisie', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                    { type: 'doc', title: 'Reconstitution AT', code: 'Formulaire', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                    { type: 'doc', title: 'Évacuation Non Urgente', code: 'BGN E RH 18', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' }
+                ]
+            },
+            REGLEMENTATION: {
+                label: 'Règlementation',
+                icon: 'scale',
+                color: 'from-indigo-600 to-indigo-800',
+                items: [
+                    { type: 'section', label: 'Protocole Sécurité', items: [
+                        { type: 'doc', title: 'Protocole Sécurité Base', code: 'BGN P SEC 01', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                        { type: 'doc', title: 'Protocole Chargement/Déchargement', code: 'BGN E SEC 01', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'Plans Site POI', code: 'BGN D SEC 04', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' }
+                    ]},
+                    { type: 'section', label: 'Règlement Intérieur', items: [
+                        { type: 'doc', title: 'Règlement Intérieur', code: 'Affichage', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                        { type: 'doc', title: 'Adjonction RI - Alcool/Stupéfiant', code: 'Art 29', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'Adjonction RI - Harcèlement', code: 'Document', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' }
+                    ]},
+                    { type: 'section', label: 'ICPE', items: [
+                        { type: 'doc', title: 'Arrêté Autorisation Exploiter', code: '2 Mai 2019', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' }
+                    ]}
+                ]
+            },
+            COORDONNEES: {
+                label: 'Plans',
+                icon: 'map-pin',
+                color: 'from-pink-600 to-pink-800',
+                items: [
+                    { type: 'section', label: 'Coordonnées PDV', items: [
+                        { type: 'doc', title: 'Coordonnées PDV Brignoles', code: 'BGN D PDV 01', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                        { type: 'doc', title: 'Mode Livraison PDV', code: 'D PDV 02', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                        { type: 'doc', title: 'Transport (TRACO/ERT)', code: 'Liste', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'N° Utiles SPDV', code: 'Annuaire', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' }
+                    ]},
+                    { type: 'section', label: 'Coordonnées Groupement', items: [
+                        { type: 'doc', title: 'Interne Base Téléphones', code: 'Liste', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'Bases National', code: 'Coordonnées', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                        { type: 'doc', title: 'Siège Tréville', code: 'Annuaire ITM LAI', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                        { type: 'doc', title: 'QHSE National', code: 'Annuaire', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' }
+                    ]},
+                    { type: 'section', label: 'Coordonnées Externe', items: [
+                        { type: 'doc', title: 'Urgence 24h/24h', code: 'Dépannage', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                        { type: 'doc', title: 'Banque Alimentaire', code: 'Coordonnées', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'Auditeurs AQUA', code: 'Carte', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' }
+                    ]},
+                    { type: 'section', label: 'Plans & Organigramme', items: [
+                        { type: 'doc', title: 'Organigramme Brignoles', code: 'Structure', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                        { type: 'doc', title: 'Plan Circulation Interne Frais', code: 'Document', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'Plans Site POI & Protocole', code: 'BGN D SEC 04', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' }
+                    ]}
+                ]
+            },
+            AUDIT: {
+                label: 'Audit',
+                icon: 'search-code',
+                color: 'from-cyan-500 to-cyan-700',
+                items: [
+                    { type: 'section', label: 'Certification', items: [
+                        { type: 'doc', title: 'Résultats Audit Certification', code: 'Dossier', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                        { type: 'doc', title: 'RD Certification Brignoles', code: 'Plans action', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                        { type: 'doc', title: 'RD Certification Région', code: 'Plans action', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' }
+                    ]},
+                    { type: 'section', label: 'Hygiène & Propreté', items: [
+                        { type: 'doc', title: 'Résultats Audit AQUA', code: 'Dossier', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                        { type: 'doc', title: 'Résultats Audit Interne HP', code: 'Dossier', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                        { type: 'doc', title: 'RD HP Brignoles', code: 'Plans action', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' }
+                    ]},
+                    { type: 'section', label: 'Sécurité', items: [
+                        { type: 'doc', title: 'Résultats Audit Sécurité', code: 'Dossier', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                        { type: 'doc', title: 'RD Sécurité Brignoles', code: 'Plans action', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' }
+                    ]}
+                ]
+            },
+            INTERVENTION: {
+                label: 'Intervention',
+                icon: 'wrench',
+                color: 'from-amber-400 to-amber-600',
+                items: [
+                    { type: 'doc', title: 'Demandes Intervention Matériel', code: 'Registre', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                    { type: 'doc', title: 'Demandes Informatique', code: 'Application', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                    { type: 'doc', title: 'Besoins Personnels', code: 'Registre 2025', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' },
+                    { type: 'doc', title: 'Planning Lavage Semis', code: 'BGN E TEC 01', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' }
+                ]
+            },
+            REUNION: {
+                label: 'CR Réunion',
+                icon: 'message-square',
+                color: 'from-violet-800 to-indigo-950',
+                items: [
+                    { type: 'doc', title: 'Point du Matin (PDM)', code: 'Dossier', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' },
+                    { type: 'doc', title: 'Réunion Exploitation', code: 'CR', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                    { type: 'doc', title: 'Minute Papillon Exploitation', code: 'Registre', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' },
+                    { type: 'doc', title: 'Minute Papillon SPDV', code: 'Registre', driveId: '1eYQ79fzfVy1izWmBIKpIxtNRJSU0bCiq' }
+                ]
+            },
+            INCIDENT: {
+                label: 'Incident',
+                icon: 'alert-triangle',
+                color: 'from-zinc-300 to-zinc-500',
+                items: [
+                    { type: 'doc', title: 'Compte Rendu Incident', code: 'BGN E RH 20', driveId: '1BWzJZ8Cmk0GMKVWwA6WRuqAs7927xjxj' },
+                    { type: 'doc', title: 'Déclaration Incident', code: 'Formulaire', driveId: '1HIAzCX1hPTtTc9B9T0FQvfRi7pzuLSKY' }
+                ]
+            },
+            INCIDENT_DOC: {
+                label: 'Incident Doc',
+                icon: 'file-text',
+                color: 'from-green-600 to-green-800',
+                items: [
+                    { type: 'doc', title: 'Incident Documentaire', code: 'BGN E QUA', driveId: '1hEzOUg9OR24DBdY2eAvBJ1Pa8aNH68GD' },
+                    { type: 'doc', title: 'Déclaration Incident Doc', code: 'Formulaire', driveId: '1rJaLWE7t4vdD1DY87kuGyhWtP5yf8E1d' }
+                ]
             }
-        });
+        };
 
-        let activeDoc = null;
-        let currentCategory = null;
+        // === NAVIGATION STATE ===
+        let navigationHistory = ['HOME'];
 
-        // --- Init ---
+        // === INIT ===
         function init() {
             createParticles();
-            renderCards();
+            renderHome();
             lucide.createIcons();
         }
 
-        // --- Render Cards ---
-        function renderCards() {
-            const grid = document.getElementById('cards-grid');
-            grid.innerHTML = CARDS.map((card, i) => `
-                <div onclick="openModal('${card.id}', '${card.label}')" class="card-item group relative aspect-square rounded-2xl p-5 cursor-pointer flex flex-col items-center justify-center text-center gap-3 overflow-hidden border border-white/10 bg-gradient-to-br ${card.color} shadow-xl">
-                    <div class="p-4 rounded-xl bg-white/10 backdrop-blur-md group-hover:scale-110 transition-transform duration-500 relative z-10">
-                        <i data-lucide="${card.icon}" class="w-10 h-10"></i>
-                    </div>
-                    <div class="relative z-10">
-                        <span class="font-rajdhani font-black text-sm uppercase tracking-wider leading-tight block mb-1">${card.label}</span>
-                        <span class="text-[9px] opacity-70 font-medium">${card.description}</span>
+        // === NAVIGATION ===
+        function goHome() {
+            navigationHistory = ['HOME'];
+            renderHome();
+        }
+
+        function openSection(sectionId) {
+            navigationHistory.push(sectionId);
+            renderSection(sectionId);
+        }
+
+        function openSubSection(sectionId, subSectionLabel) {
+            navigationHistory.push(`${sectionId}:${subSectionLabel}`);
+            renderSubSection(sectionId, subSectionLabel);
+        }
+
+        function goBack() {
+            if (navigationHistory.length > 1) {
+                navigationHistory.pop();
+                const previous = navigationHistory[navigationHistory.length - 1];
+                
+                if (previous === 'HOME') {
+                    renderHome();
+                } else if (previous.includes(':')) {
+                    const [sectionId, subSection] = previous.split(':');
+                    renderSubSection(sectionId, subSection);
+                } else {
+                    renderSection(previous);
+                }
+            }
+        }
+
+        function navigateToLevel(index) {
+            navigationHistory = navigationHistory.slice(0, index + 1);
+            const target = navigationHistory[index];
+            
+            if (target === 'HOME') {
+                renderHome();
+            } else if (target.includes(':')) {
+                const [sectionId, subSection] = target.split(':');
+                renderSubSection(sectionId, subSection);
+            } else {
+                renderSection(target);
+            }
+        }
+
+        // === RENDER FUNCTIONS ===
+        function renderBreadcrumb() {
+            const breadcrumb = document.getElementById('breadcrumb');
+            const items = navigationHistory.map((item, index) => {
+                const isLast = index === navigationHistory.length - 1;
+                
+                if (item === 'HOME') {
+                    return `
+                        <span class="breadcrumb-item">
+                            <span class="breadcrumb-link" onclick="navigateToLevel(${index})">
+                                <i data-lucide="home" class="w-3 h-3 inline"></i>
+                                Accueil
+                            </span>
+                        </span>
+                    `;
+                } else if (item.includes(':')) {
+                    const [sectionId, subSection] = item.split(':');
+                    const section = PUZZLE_DATA[sectionId];
+                    return `
+                        <span class="breadcrumb-separator">›</span>
+                        <span class="breadcrumb-item ${isLast ? 'breadcrumb-current' : ''}">
+                            <span class="${isLast ? '' : 'breadcrumb-link'}" ${isLast ? '' : `onclick="navigateToLevel(${index})"`}>
+                                ${subSection}
+                            </span>
+                        </span>
+                    `;
+                } else {
+                    const section = PUZZLE_DATA[item];
+                    return `
+                        <span class="breadcrumb-separator">›</span>
+                        <span class="breadcrumb-item ${isLast ? 'breadcrumb-current' : ''}">
+                            <span class="${isLast ? '' : 'breadcrumb-link'}" ${isLast ? '' : `onclick="navigateToLevel(${index})"`}>
+                                ${section.label}
+                            </span>
+                        </span>
+                    `;
+                }
+            }).join('');
+            
+            breadcrumb.innerHTML = items;
+            lucide.createIcons();
+        }
+
+        function renderHome() {
+            const content = document.getElementById('content-area');
+            const pieces = Object.keys(PUZZLE_DATA);
+            
+            content.innerHTML = `
+                <div class="text-center mb-10 space-y-4">
+                    <span class="inline-block px-4 py-1.5 rounded-full bg-[#E2001A]/10 text-[#E2001A] text-[10px] font-black tracking-widest uppercase border border-[#E2001A]/20">
+                        Dashboard Opérationnel
+                    </span>
+                    <h3 class="text-4xl lg:text-6xl font-black font-rajdhani tracking-tighter uppercase">
+                        ACCÈS <span class="text-[#E2001A]">DOCUMENTS</span>
+                    </h3>
+                    <p class="text-zinc-500 text-sm font-semibold max-w-2xl mx-auto">
+                        Accédez à tous vos documents QHSE en un clic. Base de données complète et mise à jour en temps réel.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    ${pieces.map(pieceId => {
+                        const piece = PUZZLE_DATA[pieceId];
+                        return `
+                            <div onclick="openSection('${pieceId}')" class="puzzle-piece group relative aspect-square rounded-2xl p-4 cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 overflow-hidden border border-white/10 bg-gradient-to-br ${piece.color} shadow-xl">
+                                <div class="p-3 rounded-xl bg-white/10 backdrop-blur-md group-hover:scale-110 transition-transform duration-500 relative z-10">
+                                    <i data-lucide="${piece.icon}" class="w-8 h-8"></i>
+                                </div>
+                                <span class="font-rajdhani font-black text-[10px] uppercase tracking-wider leading-tight relative z-10">${piece.label}</span>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+            
+            renderBreadcrumb();
+            lucide.createIcons();
+        }
+
+        function renderSection(sectionId) {
+            const section = PUZZLE_DATA[sectionId];
+            const content = document.getElementById('content-area');
+            
+            // Check if has subsections
+            const hasSubSections = section.items.some(item => item.type === 'section');
+            
+            content.innerHTML = `
+                ${navigationHistory.length > 1 ? `
+                    <button onclick="goBack()" class="btn-back mb-6 flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all text-sm font-bold">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        Retour
+                    </button>
+                ` : ''}
+                
+                <div class="mb-8">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-3 rounded-xl bg-[#E2001A]/20 text-[#E2001A]">
+                            <i data-lucide="${section.icon}" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-black font-rajdhani uppercase tracking-tight">${section.label}</h3>
+                            <p class="text-sm text-zinc-500 font-bold uppercase tracking-wider">
+                                ${section.items.length} ${hasSubSections ? 'catégories' : 'documents'}
+                            </p>
+                        </div>
                     </div>
                 </div>
-            `).join('');
+
+                <div class="grid gap-3">
+                    ${section.items.map((item, index) => {
+                        if (item.type === 'section') {
+                            return `
+                                <div onclick="openSubSection('${sectionId}', '${item.label}')" class="doc-item p-5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 cursor-pointer group">
+                                    <div class="flex items-center gap-4">
+                                        <div class="p-3 rounded-lg bg-[#E2001A]/20 text-[#E2001A] group-hover:bg-[#E2001A] group-hover:text-white transition-colors">
+                                            <i data-lucide="folder" class="w-6 h-6"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-rajdhani font-black text-base uppercase leading-tight mb-1 group-hover:text-[#E2001A] transition-colors">${item.label}</h4>
+                                            <p class="text-xs text-zinc-500 font-bold uppercase tracking-wider">${item.items.length} documents</p>
+                                        </div>
+                                        <i data-lucide="chevron-right" class="w-5 h-5 text-zinc-600 group-hover:text-[#E2001A] transition-colors"></i>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            return `
+                                <div onclick="openDocument('${item.driveId}')" class="doc-item p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 cursor-pointer group">
+                                    <div class="flex items-start gap-3">
+                                        <div class="p-2 rounded-lg bg-[#E2001A]/20 text-[#E2001A] group-hover:bg-[#E2001A] group-hover:text-white transition-colors">
+                                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-rajdhani font-black text-sm uppercase leading-tight mb-1 group-hover:text-[#E2001A] transition-colors">${item.title}</h4>
+                                            <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">${item.code}</p>
+                                        </div>
+                                        <i data-lucide="external-link" class="w-4 h-4 text-zinc-600 group-hover:text-[#E2001A] transition-colors"></i>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }).join('')}
+                </div>
+            `;
             
+            renderBreadcrumb();
             lucide.createIcons();
         }
 
-        // --- Toggle Submenu ---
-        function toggleSubmenu(id) {
-            const submenu = document.getElementById(id);
-            const arrow = document.getElementById('arrow-' + id.replace('submenu-', ''));
+        function renderSubSection(sectionId, subSectionLabel) {
+            const section = PUZZLE_DATA[sectionId];
+            const subSection = section.items.find(item => item.label === subSectionLabel);
+            const content = document.getElementById('content-area');
             
-            submenu.classList.toggle('open');
-            if (arrow) arrow.classList.toggle('open');
-        }
-
-        // --- Show Section ---
-        function showSection(sectionId) {
-            if (sectionId === 'home') {
-                document.getElementById('home-section').style.display = 'block';
-            }
-        }
-
-        // --- Modal ---
-        function openModal(categoryId, label) {
-            currentCategory = categoryId;
-            document.getElementById('modal-title').innerText = label;
-            document.getElementById('doc-modal').classList.remove('hidden');
-            document.getElementById('doc-modal').classList.add('flex');
-            renderDocList();
-            lucide.createIcons();
-        }
-
-        function closeModal() {
-            document.getElementById('doc-modal').classList.add('hidden');
-            document.getElementById('doc-modal').classList.remove('flex');
-            document.getElementById('viewer-iframe').classList.add('hidden');
-            document.getElementById('viewer-placeholder').classList.remove('hidden');
-            document.getElementById('viewer-loading').classList.add('hidden');
-            activeDoc = null;
-            currentCategory = null;
-        }
-
-        // --- Doc List ---
-        function renderDocList(filter = '') {
-            const list = document.getElementById('doc-list');
-            let filtered = DOCUMENTS;
-            
-            // Filtrer par catégorie si une catégorie est active
-            if (currentCategory) {
-                filtered = filtered.filter(d => d.category === currentCategory);
-            }
-            
-            // Filtrer par recherche
-            if (filter) {
-                filtered = filtered.filter(d => 
-                    d.title.toLowerCase().includes(filter.toLowerCase()) ||
-                    d.category.toLowerCase().includes(filter.toLowerCase())
-                );
-            }
-            
-            document.getElementById('doc-count').textContent = `${filtered.length} document${filtered.length > 1 ? 's' : ''}`;
-            
-            list.innerHTML = filtered.map(d => `
-                <button onclick="selectDoc('${d.id}')" class="doc-item w-full text-left p-3 rounded-xl transition-all border ${activeDoc === d.id ? 'bg-[#E2001A] border-[#E2001A] text-white shadow-lg shadow-red-500/20' : 'bg-white/5 hover:bg-white/10 border-white/5 text-zinc-300'}">
-                    <div class="flex items-start justify-between gap-2 mb-1.5">
-                        <div class="font-bold text-xs leading-tight flex-1">${d.title}</div>
-                        <span class="px-2 py-0.5 rounded-full text-[8px] font-black uppercase ${activeDoc === d.id ? 'bg-white/20' : 'bg-[#E2001A]/20 text-[#E2001A]'}">${d.category}</span>
-                    </div>
-                    <div class="text-[8px] opacity-50 uppercase font-black">PDF • ID: ${d.driveId.substring(0,8)}</div>
+            content.innerHTML = `
+                <button onclick="goBack()" class="btn-back mb-6 flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all text-sm font-bold">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    Retour
                 </button>
-            `).join('');
+                
+                <div class="mb-8">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-3 rounded-xl bg-[#E2001A]/20 text-[#E2001A]">
+                            <i data-lucide="folder-open" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-black font-rajdhani uppercase tracking-tight">${subSectionLabel}</h3>
+                            <p class="text-sm text-zinc-500 font-bold uppercase tracking-wider">
+                                ${subSection.items.length} documents
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid gap-3">
+                    ${subSection.items.map((item, index) => `
+                        <div onclick="openDocument('${item.driveId}')" class="doc-item p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 cursor-pointer group">
+                            <div class="flex items-start gap-3">
+                                <div class="p-2 rounded-lg bg-[#E2001A]/20 text-[#E2001A] group-hover:bg-[#E2001A] group-hover:text-white transition-colors">
+                                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-rajdhani font-black text-sm uppercase leading-tight mb-1 group-hover:text-[#E2001A] transition-colors">${item.title}</h4>
+                                    <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">${item.code}</p>
+                                </div>
+                                <i data-lucide="external-link" class="w-4 h-4 text-zinc-600 group-hover:text-[#E2001A] transition-colors"></i>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            renderBreadcrumb();
+            lucide.createIcons();
         }
 
-        // --- Select Doc ---
-        function selectDoc(id) {
-            activeDoc = id;
-            const doc = DOCUMENTS.find(d => d.id === id);
-            const iframe = document.getElementById('viewer-iframe');
-            const placeholder = document.getElementById('viewer-placeholder');
-            const loading = document.getElementById('viewer-loading');
-            
-            // Show loading
-            loading.classList.remove('hidden');
-            loading.classList.add('flex');
-            
-            placeholder.classList.add('hidden');
-            iframe.classList.add('hidden');
-            
-            // Set iframe source
-            iframe.src = doc.previewUrl;
-            
-            // Hide loading and show iframe when loaded
-            iframe.onload = () => {
-                setTimeout(() => {
-                    loading.classList.add('hidden');
-                    loading.classList.remove('flex');
-                    iframe.classList.remove('hidden');
-                }, 500);
-            };
-
-            document.getElementById('open-new-tab').onclick = () => {
-                window.open(doc.viewUrl, '_blank');
-            };
-            
-            renderDocList(document.getElementById('search-docs').value);
+        function openDocument(driveId) {
+            const viewUrl = `https://drive.google.com/file/d/${driveId}/view?usp=drive_link`;
+            window.open(viewUrl, '_blank', 'noopener,noreferrer');
         }
 
-        // --- Search ---
-        document.getElementById('search-docs').addEventListener('input', (e) => {
-            renderDocList(e.target.value);
-        });
-
-        // --- Keyboard ---
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
-
-        // --- Start ---
+        // === START ===
         init();
         
-        console.log('%c🧩 Portail QHSE - Puzzle Qualité', 'color: #E2001A; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px rgba(226,0,26,0.5);');
-        console.log('%c✨ Version Complète avec tous les documents', 'color: #10b981; font-size: 12px; font-weight: bold;');
-        console.log(`%c📄 ${DOCUMENTS.length} documents disponibles dans ${CARDS.length} catégories`, 'color: #3b82f6; font-size: 11px;');
+        console.log('%c🧩 Portail QHSE Les Mousquetaires', 'color: #E2001A; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px rgba(226,0,26,0.5);');
+        console.log('%c✨ Navigation par puzzle multi-niveaux - Système PowerPoint complet', 'color: #10b981; font-size: 12px; font-weight: bold;');
     </script>
 </body>
 </html>
