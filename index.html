@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portail QHSE - Brignoles</title>
-    
+    <title>Portail QHSE Elite - Brignoles</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=Rajdhani:wght@500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-
     <style>
         :root {
             --primary: #E2001A;
-            --bg-deep: #020203;
+            --bg-deep: #050507;
+            --sidebar-bg: #0d0d0f;
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --border: rgba(255, 255, 255, 0.06);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        * {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        html { font-size: 14px; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        html { font-size: 18px; }
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-deep);
@@ -26,336 +26,171 @@
             overflow: hidden;
             height: 100vh;
         }
+
         .font-rajdhani { font-family: 'Rajdhani', sans-serif; }
-        
-        /* Animated Background */
-        @keyframes gridFloat {
-            0%, 100% { transform: perspective(1000px) rotateX(60deg) translateY(-150px) translateZ(-100px); }
-            50% { transform: perspective(1000px) rotateX(60deg) translateY(-130px) translateZ(-100px); }
-        }
-        .bg-grid {
-            position: fixed;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(226, 0, 26, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(226, 0, 26, 0.08) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridFloat 6s ease-in-out infinite;
-            mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
-            z-index: -1;
-            opacity: 0.4;
+
+        /* Layout */
+        .app-container { display: flex; height: 100vh; }
+
+        .sidebar {
+            width: 300px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 50;
         }
 
-        /* Particles */
-        .particles {
-            position: fixed;
-            inset: 0;
-            z-index: -2;
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
-        }
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(226, 0, 26, 0.6);
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(226, 0, 26, 0.8);
-        }
-        @keyframes particleFloat {
-            0% { transform: translateY(0) translateX(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) translateX(var(--tx)); opacity: 0; }
+            background: radial-gradient(circle at 50% 0%, #121217 0%, #050507 100%);
         }
 
-        /* Logo */
-        @keyframes logoGlow {
-            0%, 100% { box-shadow: 0 0 12px rgba(226, 0, 26, 0.4); }
-            50% { box-shadow: 0 0 25px rgba(226, 0, 26, 0.8), 0 0 40px rgba(226, 0, 26, 0.4); }
+        /* Sidebar Navigation */
+        .nav-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
         }
-        .logo-animated {
-            animation: logoGlow 2s ease-in-out infinite;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .logo-animated:hover {
-            transform: scale(1.1);
-        }
+        .nav-scroll::-webkit-scrollbar { width: 3px; }
+        .nav-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 
-        /* Puzzle Pieces */
-        @keyframes pieceEntrance {
-            from { opacity: 0; transform: scale(0.8) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        .puzzle-piece {
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            overflow: hidden;
-            animation: pieceEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
-        }
-        .puzzle-piece::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-        .puzzle-piece::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-        .puzzle-piece:hover::before { opacity: 1; }
-        .puzzle-piece:hover::after { transform: translateX(100%); }
-        .puzzle-piece:hover {
-            transform: translateY(-8px) scale(1.05);
-            filter: brightness(1.15) saturate(1.1);
-            z-index: 10;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(226, 0, 26, 0.3);
-        }
-        .puzzle-piece:active { transform: translateY(-4px) scale(1.02); }
-
-        /* Stagger animation */
-        .puzzle-piece:nth-child(1) { animation-delay: 0.05s; }
-        .puzzle-piece:nth-child(2) { animation-delay: 0.1s; }
-        .puzzle-piece:nth-child(3) { animation-delay: 0.15s; }
-        .puzzle-piece:nth-child(4) { animation-delay: 0.2s; }
-        .puzzle-piece:nth-child(5) { animation-delay: 0.25s; }
-        .puzzle-piece:nth-child(6) { animation-delay: 0.3s; }
-        .puzzle-piece:nth-child(7) { animation-delay: 0.35s; }
-        .puzzle-piece:nth-child(8) { animation-delay: 0.4s; }
-        .puzzle-piece:nth-child(9) { animation-delay: 0.45s; }
-        .puzzle-piece:nth-child(10) { animation-delay: 0.5s; }
-        .puzzle-piece:nth-child(11) { animation-delay: 0.55s; }
-        .puzzle-piece:nth-child(12) { animation-delay: 0.6s; }
-        .puzzle-piece:nth-child(13) { animation-delay: 0.65s; }
-        .puzzle-piece:nth-child(14) { animation-delay: 0.7s; }
-        .puzzle-piece:nth-child(15) { animation-delay: 0.75s; }
-        .puzzle-piece:nth-child(16) { animation-delay: 0.8s; }
-        .puzzle-piece:nth-child(17) { animation-delay: 0.85s; }
-        .puzzle-piece:nth-child(18) { animation-delay: 0.9s; }
-        .puzzle-piece:nth-child(19) { animation-delay: 0.95s; }
-
-        /* Glass */
-        .glass {
-            background: rgba(10, 10, 15, 0.85);
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Scrollbar */
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { 
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb { 
-            background: linear-gradient(180deg, var(--primary), #b00015);
-            border-radius: 3px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
-        }
-
-        /* Modal */
-        @keyframes modalSlideIn {
-            from { opacity: 0; transform: scale(0.9) translateY(30px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        .modal-enter {
-            animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        /* Document Links */
-        @keyframes docSlideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        .doc-item {
-            animation: docSlideIn 0.3s ease backwards;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .doc-item:nth-child(1) { animation-delay: 0.05s; }
-        .doc-item:nth-child(2) { animation-delay: 0.1s; }
-        .doc-item:nth-child(3) { animation-delay: 0.15s; }
-        .doc-item:nth-child(4) { animation-delay: 0.2s; }
-        .doc-item:nth-child(5) { animation-delay: 0.25s; }
-        .doc-item:nth-child(6) { animation-delay: 0.3s; }
-        .doc-item:nth-child(7) { animation-delay: 0.35s; }
-        .doc-item:nth-child(8) { animation-delay: 0.4s; }
-        
-        .doc-item:hover {
-            transform: translateX(8px);
-            background: rgba(226, 0, 26, 0.15) !important;
-        }
-
-        /* Breadcrumb */
-        .breadcrumb {
+        .nav-item {
+            width: 100%;
             display: flex;
             align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .breadcrumb-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 11px;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-        .breadcrumb-separator {
-            color: rgba(255, 255, 255, 0.3);
-        }
-        .breadcrumb-link {
-            color: rgba(255, 255, 255, 0.5);
+            gap: 14px;
+            padding: 12px 18px;
+            border-radius: 12px;
+            color: #777;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            text-align: left;
+            border: none;
+            background: transparent;
             cursor: pointer;
-            transition: color 0.2s;
+            margin-bottom: 4px;
         }
-        .breadcrumb-link:hover {
-            color: var(--primary);
-        }
-        .breadcrumb-current {
-            color: var(--primary);
+        .nav-item:hover { background: rgba(255,255,255,0.04); color: white; }
+        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 8px 16px rgba(226, 0, 26, 0.2); }
+        .nav-item i { width: 20px; height: 20px; }
+
+        /* Puzzle Cards */
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 24px;
+            padding: 20px 0;
         }
 
-        /* Back button */
-        .btn-back {
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        .puzzle-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
         }
-        .btn-back:hover {
-            transform: translateX(-4px);
-            background: rgba(226, 0, 26, 0.2) !important;
+        .puzzle-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            background: rgba(226, 0, 26, 0.04);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
         }
-    </style>
+        .puzzle-card i { width: 48px; height: 48px; color: var(--primary); margin-bottom: 20px; transition: var(--transition); }
+        .puzzle-card:hover i { transform: scale(1.1); filter: drop-shadow(0 0 10px var(--primary)); }
+        .puzzle-card span { font-family: 'Rajdhani', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 1px; }
+        .puzzle-card .code { font-size: 0.75rem; color: #555; margin-top: 12px; font-weight: 700; letter-spacing: 2px; }
+
+        /* Header */
+        header {
+            height: 80px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .logo-box {
+            background: white;
+            padding: 10px;
+            border-radius: 14px;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .logo-box:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(226, 0, 26, 0.2); }
+        .logo-box img { max-width: 100%; height: auto; image-rendering: -webkit-optimize-contrast; }
+
+        /* Status Badge */
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 100px;
+        }
+        .status-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+        .status-text { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; color: #22c55e; }
+</style>
 </head>
 <body>
-    <!-- Particles Background -->
-    <div class="particles" id="particles"></div>
-    <div class="bg-grid"></div>
-
-    <div class="flex h-screen overflow-hidden">
-        <!-- Sidebar Desktop -->
-        <aside class="hidden lg:flex w-60 flex-col glass border-r border-white/10 z-20">
-            <div class="p-6 border-b border-white/10">
-                <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 bg-[#E2001A] rounded-xl flex items-center justify-center logo-animated cursor-pointer" onclick="goHome()">
-                        <i data-lucide="layout-grid" class="text-white w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <h1 class="font-rajdhani font-black text-lg uppercase leading-none tracking-tight">Brignoles</h1>
-                        <span class="text-[9px] text-zinc-500 font-bold tracking-widest uppercase">Logistique & QHSE</span>
-                    </div>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="p-8 border-b border-white/5 flex items-center gap-5">
+                <div class="logo-box" onclick="renderHome()">
+                    <img src="data:image/png;base64,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" alt="Logo">
+                </div>
+                <div>
+                    <h1 class="font-rajdhani font-black text-2xl uppercase leading-none tracking-tighter">Brignoles</h1>
+                    <span class="text-[11px] text-zinc-500 font-bold tracking-widest uppercase">Logistique</span>
                 </div>
             </div>
-
-            <nav class="flex-1 p-3 space-y-1.5 overflow-y-auto custom-scrollbar">
-                <button onclick="goHome()" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-[#E2001A]/10 border-l-3 border-[#E2001A] text-white text-sm font-bold transition-all">
-                    <i data-lucide="home" class="w-4 h-4"></i>
-                    <span>Accueil</span>
-                </button>
-                
-                <div class="pt-3 pb-1.5 px-3">
-                    <span class="text-[8px] text-zinc-600 font-black tracking-widest uppercase">Accès Rapides</span>
-                </div>
-
-                <a href="#" onclick="openSection('POI')" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="flame" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Incendie</span>
-                </a>
-                <a href="#" onclick="openSection('RETRAIT')" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="truck" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>Retrait</span>
-                </a>
-                <a href="#" onclick="openSection('FDS')" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-zinc-400 text-sm font-bold hover:bg-white/5 hover:text-white transition-all group">
-                    <i data-lucide="flask-conical" class="w-4 h-4 group-hover:text-[#E2001A] transition-colors"></i>
-                    <span>FDS</span>
-                </a>
-            </nav>
-            
-            <div class="p-3 text-[8px] text-zinc-600 font-bold text-center uppercase tracking-tighter">
+            <div class="nav-scroll">
+                <button onclick="renderHome()" class="nav-item active" data-key="HOME"><i data-lucide="home"></i><span>Accueil</span></button><div class="pt-6 pb-2 px-4"><span class="text-[10px] text-zinc-600 font-black tracking-widest uppercase">Navigation Rapide</span></div><button onclick="openSection('PROCEDURES')" class="nav-item" data-key="PROCEDURES"><i data-lucide="clipboard-list"></i><span>Procédures</span></button><button onclick="openSection('POI')" class="nav-item" data-key="POI"><i data-lucide="flame"></i><span>Incendie / POI</span></button><button onclick="openSection('RETRAIT')" class="nav-item" data-key="RETRAIT"><i data-lucide="truck"></i><span>Retrait Qualité</span></button><button onclick="openSection('FDS')" class="nav-item" data-key="FDS"><i data-lucide="flask-conical"></i><span>Fiches de Sécurité</span></button><button onclick="openSection('EVALUATION')" class="nav-item" data-key="EVALUATION"><i data-lucide="target"></i><span>Évaluation</span></button><button onclick="openSection('REFERENTIELS')" class="nav-item" data-key="REFERENTIELS"><i data-lucide="book-open"></i><span>Référentiels</span></button><button onclick="openSection('PERSONNEL')" class="nav-item" data-key="PERSONNEL"><i data-lucide="users"></i><span>Personnel</span></button><button onclick="openSection('DECHETS')" class="nav-item" data-key="DECHETS"><i data-lucide="recycle"></i><span>Déchets</span></button><button onclick="openSection('INDICATEURS')" class="nav-item" data-key="INDICATEURS"><i data-lucide="bar-chart-3"></i><span>Indicateurs</span></button><button onclick="openSection('AFFICHAGE')" class="nav-item" data-key="AFFICHAGE"><i data-lucide="monitor"></i><span>Affichage</span></button><button onclick="openSection('FORMATION')" class="nav-item" data-key="FORMATION"><i data-lucide="graduation-cap"></i><span>Formation</span></button><button onclick="openSection('AT')" class="nav-item" data-key="AT"><i data-lucide="activity"></i><span>Suivi AT</span></button><button onclick="openSection('REGLEMENTATION')" class="nav-item" data-key="REGLEMENTATION"><i data-lucide="scale"></i><span>Règlementation</span></button><button onclick="openSection('COORDONNEES')" class="nav-item" data-key="COORDONNEES"><i data-lucide="map-pin"></i><span>Plans</span></button><button onclick="openSection('AUDIT')" class="nav-item" data-key="AUDIT"><i data-lucide="search-code"></i><span>Audit</span></button><button onclick="openSection('INTERVENTION')" class="nav-item" data-key="INTERVENTION"><i data-lucide="wrench"></i><span>Intervention</span></button><button onclick="openSection('REUNION')" class="nav-item" data-key="REUNION"><i data-lucide="message-square"></i><span>CR Réunion</span></button><button onclick="openSection('INCIDENT')" class="nav-item" data-key="INCIDENT"><i data-lucide="alert-triangle"></i><span>Incident</span></button><button onclick="openSection('INCIDENT_DOC')" class="nav-item" data-key="INCIDENT_DOC"><i data-lucide="file-text"></i><span>Incident Doc</span></button>
+            </div>
+            <div class="p-6 border-t border-white/5 text-[11px] text-zinc-600 font-bold text-center uppercase tracking-widest">
                 &copy; 2026 Les Mousquetaires
             </div>
         </aside>
 
-        <!-- Main Content -->
-        <main class="flex-1 flex flex-col relative">
-            <header class="h-16 glass border-b border-white/10 flex items-center justify-between px-5 lg:px-10 sticky top-0 z-10">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-[#E2001A]/10 rounded-lg flex items-center justify-center lg:hidden logo-animated cursor-pointer" onclick="goHome()">
-                        <i data-lucide="shield-check" class="text-[#E2001A] w-5 h-5"></i>
+        <main class="main-content">
+            <header>
+                <h2 class="font-rajdhani text-3xl font-black uppercase tracking-tight">
+                    Portail <span class="text-[#E2001A]">QHSE</span>
+                </h2>
+                <div class="ml-auto">
+                    <div class="status-badge">
+                        <div class="status-dot"></div>
+                        <span class="status-text">SITE EN LIGNE</span>
                     </div>
-                    <h2 class="font-rajdhani text-2xl font-black uppercase tracking-tight">
-                        Portail <span class="text-[#E2001A]">QHSE</span>
-                    </h2>
-                </div>
-                
-                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20">
-                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span class="text-[9px] font-black uppercase tracking-widest text-green-500">En ligne</span>
                 </div>
             </header>
-
-            <div class="flex-1 overflow-y-auto custom-scrollbar p-5 lg:p-10">
-                <div class="max-w-6xl mx-auto">
-                    <!-- Breadcrumb -->
-                    <div id="breadcrumb" class="breadcrumb mb-6"></div>
-
-                    <!-- Content Container -->
-                    <div id="content-area"></div>
-                </div>
+            <div class="flex-1 overflow-y-auto p-12">
+                <div class="max-w-7xl mx-auto" id="content-area"></div>
             </div>
         </main>
     </div>
 
-    <!-- Mobile Navigation -->
-    <nav class="lg:hidden fixed bottom-0 left-0 right-0 h-16 glass border-t border-white/10 flex items-center justify-around z-50 px-2">
-        <button onclick="goHome()" class="flex flex-col items-center gap-1 text-[#E2001A] px-3 py-2 rounded-lg">
-            <i data-lucide="home" class="w-5 h-5"></i>
-            <span class="text-[8px] font-black uppercase tracking-wide">Accueil</span>
-        </button>
-        <button onclick="openSection('POI')" class="flex flex-col items-center gap-1 text-zinc-500 hover:text-white px-3 py-2 rounded-lg transition-colors">
-            <i data-lucide="flame" class="w-5 h-5"></i>
-            <span class="text-[8px] font-black uppercase tracking-wide">POI</span>
-        </button>
-        <button onclick="openSection('FDS')" class="flex flex-col items-center gap-1 text-zinc-500 hover:text-white px-3 py-2 rounded-lg transition-colors">
-            <i data-lucide="flask-conical" class="w-5 h-5"></i>
-            <span class="text-[8px] font-black uppercase tracking-wide">FDS</span>
-        </button>
-        <button onclick="openSection('RETRAIT')" class="flex flex-col items-center gap-1 text-zinc-500 hover:text-white px-3 py-2 rounded-lg transition-colors">
-            <i data-lucide="truck" class="w-5 h-5"></i>
-            <span class="text-[8px] font-black uppercase tracking-wide">Retrait</span>
-        </button>
-    </nav>
-
     <script>
-        // === PARTICLES ===
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-                particle.style.animationDelay = Math.random() * 5 + 's';
-                particle.style.setProperty('--tx', (Math.random() - 0.5) * 100 + 'px');
-                particle.style.animation = `particleFloat ${Math.random() * 10 + 15}s linear infinite`;
-                particle.style.animationDelay = Math.random() * 5 + 's';
-                container.appendChild(particle);
-            }
-        }
-
-        // === DATA STRUCTURE ===
         const PUZZLE_DATA = {
             PROCEDURES: {
                 label: 'Procédures',
@@ -703,269 +538,111 @@
                 ]
             }
         };
-
-        // === NAVIGATION STATE ===
-        let navigationHistory = ['HOME'];
-
-        // === INIT ===
+        
         function init() {
-            createParticles();
             renderHome();
-            lucide.createIcons();
-        }
-
-        // === NAVIGATION ===
-        function goHome() {
-            navigationHistory = ['HOME'];
-            renderHome();
-        }
-
-        function openSection(sectionId) {
-            navigationHistory.push(sectionId);
-            renderSection(sectionId);
-        }
-
-        function openSubSection(sectionId, subSectionLabel) {
-            navigationHistory.push(`${sectionId}:${subSectionLabel}`);
-            renderSubSection(sectionId, subSectionLabel);
-        }
-
-        function goBack() {
-            if (navigationHistory.length > 1) {
-                navigationHistory.pop();
-                const previous = navigationHistory[navigationHistory.length - 1];
-                
-                if (previous === 'HOME') {
-                    renderHome();
-                } else if (previous.includes(':')) {
-                    const [sectionId, subSection] = previous.split(':');
-                    renderSubSection(sectionId, subSection);
-                } else {
-                    renderSection(previous);
-                }
-            }
-        }
-
-        function navigateToLevel(index) {
-            navigationHistory = navigationHistory.slice(0, index + 1);
-            const target = navigationHistory[index];
-            
-            if (target === 'HOME') {
-                renderHome();
-            } else if (target.includes(':')) {
-                const [sectionId, subSection] = target.split(':');
-                renderSubSection(sectionId, subSection);
-            } else {
-                renderSection(target);
-            }
-        }
-
-        // === RENDER FUNCTIONS ===
-        function renderBreadcrumb() {
-            const breadcrumb = document.getElementById('breadcrumb');
-            const items = navigationHistory.map((item, index) => {
-                const isLast = index === navigationHistory.length - 1;
-                
-                if (item === 'HOME') {
-                    return `
-                        <span class="breadcrumb-item">
-                            <span class="breadcrumb-link" onclick="navigateToLevel(${index})">
-                                <i data-lucide="home" class="w-3 h-3 inline"></i>
-                                Accueil
-                            </span>
-                        </span>
-                    `;
-                } else if (item.includes(':')) {
-                    const [sectionId, subSection] = item.split(':');
-                    const section = PUZZLE_DATA[sectionId];
-                    return `
-                        <span class="breadcrumb-separator">›</span>
-                        <span class="breadcrumb-item ${isLast ? 'breadcrumb-current' : ''}">
-                            <span class="${isLast ? '' : 'breadcrumb-link'}" ${isLast ? '' : `onclick="navigateToLevel(${index})"`}>
-                                ${subSection}
-                            </span>
-                        </span>
-                    `;
-                } else {
-                    const section = PUZZLE_DATA[item];
-                    return `
-                        <span class="breadcrumb-separator">›</span>
-                        <span class="breadcrumb-item ${isLast ? 'breadcrumb-current' : ''}">
-                            <span class="${isLast ? '' : 'breadcrumb-link'}" ${isLast ? '' : `onclick="navigateToLevel(${index})"`}>
-                                ${section.label}
-                            </span>
-                        </span>
-                    `;
-                }
-            }).join('');
-            
-            breadcrumb.innerHTML = items;
             lucide.createIcons();
         }
 
         function renderHome() {
-            const content = document.getElementById('content-area');
-            const pieces = Object.keys(PUZZLE_DATA);
-            
-            content.innerHTML = `
-                <div class="text-center mb-10 space-y-4">
-                    <span class="inline-block px-4 py-1.5 rounded-full bg-[#E2001A]/10 text-[#E2001A] text-[10px] font-black tracking-widest uppercase border border-[#E2001A]/20">
-                        Dashboard Opérationnel
-                    </span>
-                    <h3 class="text-4xl lg:text-6xl font-black font-rajdhani tracking-tighter uppercase">
-                        ACCÈS <span class="text-[#E2001A]">DOCUMENTS</span>
-                    </h3>
-                    <p class="text-zinc-500 text-sm font-semibold max-w-2xl mx-auto">
-                        Accédez à tous vos documents QHSE en un clic. Base de données complète et mise à jour en temps réel.
-                    </p>
+            const container = document.getElementById('content-area');
+            container.innerHTML = `
+                <div class="mb-10">
+                    <h2 class="text-5xl font-rajdhani font-black uppercase tracking-tighter">Accueil</h2>
+                    <p class="text-zinc-500 font-medium text-lg">Portail QHSE - Base de Brignoles</p>
                 </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                    ${pieces.map(pieceId => {
-                        const piece = PUZZLE_DATA[pieceId];
-                        return `
-                            <div onclick="openSection('${pieceId}')" class="puzzle-piece group relative aspect-square rounded-2xl p-4 cursor-pointer flex flex-col items-center justify-center text-center gap-2.5 overflow-hidden border border-white/10 bg-gradient-to-br ${piece.color} shadow-xl">
-                                <div class="p-3 rounded-xl bg-white/10 backdrop-blur-md group-hover:scale-110 transition-transform duration-500 relative z-10">
-                                    <i data-lucide="${piece.icon}" class="w-8 h-8"></i>
-                                </div>
-                                <span class="font-rajdhani font-black text-[10px] uppercase tracking-wider leading-tight relative z-10">${piece.label}</span>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
+                <div class="puzzle-grid" id="home-grid"></div>
             `;
             
-            renderBreadcrumb();
+            const grid = document.getElementById('home-grid');
+            Object.keys(PUZZLE_DATA).forEach(key => {
+                const section = PUZZLE_DATA[key];
+                const card = document.createElement('div');
+                card.className = 'puzzle-card';
+                card.onclick = () => openSection(key);
+                card.innerHTML = `
+                    <i data-lucide="${section.icon}"></i>
+                    <span>${section.label}</span>
+                `;
+                grid.appendChild(card);
+            });
             lucide.createIcons();
+            updateActiveNav('HOME');
         }
 
-        function renderSection(sectionId) {
-            const section = PUZZLE_DATA[sectionId];
-            const content = document.getElementById('content-area');
-            
-            // Check if has subsections
-            const hasSubSections = section.items.some(item => item.type === 'section');
-            
-            content.innerHTML = `
-                ${navigationHistory.length > 1 ? `
-                    <button onclick="goBack()" class="btn-back mb-6 flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all text-sm font-bold">
-                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                        Retour
+        function openSection(key) {
+            const section = PUZZLE_DATA[key];
+            const container = document.getElementById('content-area');
+            container.innerHTML = `
+                <div class="flex items-center gap-6 mb-10">
+                    <button onclick="renderHome()" class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 border border-white/10 transition-all">
+                        <i data-lucide="arrow-left" class="w-6 h-6"></i>
                     </button>
-                ` : ''}
-                
-                <div class="mb-8">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="p-3 rounded-xl bg-[#E2001A]/20 text-[#E2001A]">
-                            <i data-lucide="${section.icon}" class="w-8 h-8"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-3xl font-black font-rajdhani uppercase tracking-tight">${section.label}</h3>
-                            <p class="text-sm text-zinc-500 font-bold uppercase tracking-wider">
-                                ${section.items.length} ${hasSubSections ? 'catégories' : 'documents'}
-                            </p>
-                        </div>
+                    <div>
+                        <h2 class="text-5xl font-rajdhani font-black uppercase tracking-tighter">${section.label}</h2>
+                        <p class="text-zinc-500 font-medium">Documents de la section</p>
                     </div>
                 </div>
-
-                <div class="grid gap-3">
-                    ${section.items.map((item, index) => {
-                        if (item.type === 'section') {
-                            return `
-                                <div onclick="openSubSection('${sectionId}', '${item.label}')" class="doc-item p-5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 cursor-pointer group">
-                                    <div class="flex items-center gap-4">
-                                        <div class="p-3 rounded-lg bg-[#E2001A]/20 text-[#E2001A] group-hover:bg-[#E2001A] group-hover:text-white transition-colors">
-                                            <i data-lucide="folder" class="w-6 h-6"></i>
-                                        </div>
-                                        <div class="flex-1">
-                                            <h4 class="font-rajdhani font-black text-base uppercase leading-tight mb-1 group-hover:text-[#E2001A] transition-colors">${item.label}</h4>
-                                            <p class="text-xs text-zinc-500 font-bold uppercase tracking-wider">${item.items.length} documents</p>
-                                        </div>
-                                        <i data-lucide="chevron-right" class="w-5 h-5 text-zinc-600 group-hover:text-[#E2001A] transition-colors"></i>
-                                    </div>
-                                </div>
-                            `;
-                        } else {
-                            return `
-                                <div onclick="openDocument('${item.driveId}')" class="doc-item p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 cursor-pointer group">
-                                    <div class="flex items-start gap-3">
-                                        <div class="p-2 rounded-lg bg-[#E2001A]/20 text-[#E2001A] group-hover:bg-[#E2001A] group-hover:text-white transition-colors">
-                                            <i data-lucide="file-text" class="w-5 h-5"></i>
-                                        </div>
-                                        <div class="flex-1">
-                                            <h4 class="font-rajdhani font-black text-sm uppercase leading-tight mb-1 group-hover:text-[#E2001A] transition-colors">${item.title}</h4>
-                                            <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">${item.code}</p>
-                                        </div>
-                                        <i data-lucide="external-link" class="w-4 h-4 text-zinc-600 group-hover:text-[#E2001A] transition-colors"></i>
-                                    </div>
-                                </div>
-                            `;
-                        }
-                    }).join('')}
-                </div>
+                <div class="puzzle-grid" id="section-grid"></div>
             `;
             
-            renderBreadcrumb();
+            const grid = document.getElementById('section-grid');
+            section.items.forEach(item => {
+                if (item.type === 'section') {
+                    const card = document.createElement('div');
+                    card.className = 'puzzle-card';
+                    card.onclick = () => openSubSection(key, item.label);
+                    card.innerHTML = `<i data-lucide="folder"></i><span>${item.label}</span>`;
+                    grid.appendChild(card);
+                } else {
+                    renderDocCard(grid, item);
+                }
+            });
+            lucide.createIcons();
+            updateActiveNav(key);
+        }
+
+        function openSubSection(key, subLabel) {
+            const section = PUZZLE_DATA[key];
+            const sub = section.items.find(i => i.label === subLabel);
+            const container = document.getElementById('content-area');
+            container.innerHTML = `
+                <div class="flex items-center gap-6 mb-10">
+                    <button onclick="openSection('${key}')" class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 border border-white/10 transition-all">
+                        <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-5xl font-rajdhani font-black uppercase tracking-tighter">${subLabel}</h2>
+                        <p class="text-zinc-500 font-medium">${section.label}</p>
+                    </div>
+                </div>
+                <div class="puzzle-grid" id="sub-grid"></div>
+            `;
+            const grid = document.getElementById('sub-grid');
+            sub.items.forEach(item => renderDocCard(grid, item));
             lucide.createIcons();
         }
 
-        function renderSubSection(sectionId, subSectionLabel) {
-            const section = PUZZLE_DATA[sectionId];
-            const subSection = section.items.find(item => item.label === subSectionLabel);
-            const content = document.getElementById('content-area');
-            
-            content.innerHTML = `
-                <button onclick="goBack()" class="btn-back mb-6 flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all text-sm font-bold">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                    Retour
-                </button>
-                
-                <div class="mb-8">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="p-3 rounded-xl bg-[#E2001A]/20 text-[#E2001A]">
-                            <i data-lucide="folder-open" class="w-8 h-8"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-3xl font-black font-rajdhani uppercase tracking-tight">${subSectionLabel}</h3>
-                            <p class="text-sm text-zinc-500 font-bold uppercase tracking-wider">
-                                ${subSection.items.length} documents
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid gap-3">
-                    ${subSection.items.map((item, index) => `
-                        <div onclick="openDocument('${item.driveId}')" class="doc-item p-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 cursor-pointer group">
-                            <div class="flex items-start gap-3">
-                                <div class="p-2 rounded-lg bg-[#E2001A]/20 text-[#E2001A] group-hover:bg-[#E2001A] group-hover:text-white transition-colors">
-                                    <i data-lucide="file-text" class="w-5 h-5"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="font-rajdhani font-black text-sm uppercase leading-tight mb-1 group-hover:text-[#E2001A] transition-colors">${item.title}</h4>
-                                    <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">${item.code}</p>
-                                </div>
-                                <i data-lucide="external-link" class="w-4 h-4 text-zinc-600 group-hover:text-[#E2001A] transition-colors"></i>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
+        function renderDocCard(container, item) {
+            const card = document.createElement('div');
+            const isDev = item.driveId === 'DEVELOPMENT';
+            card.className = `puzzle-card ${isDev ? 'opacity-30 cursor-not-allowed' : ''}`;
+            if (!isDev) card.onclick = () => window.open(`https://drive.google.com/file/d/${item.driveId}/view`, '_blank');
+            card.innerHTML = `
+                <i data-lucide="${isDev ? 'clock' : 'file-text'}"></i>
+                <span>${item.title}</span>
+                <div class="code">${isDev ? 'EN COURS' : (item.code || 'DOC')}</div>
             `;
-            
-            renderBreadcrumb();
-            lucide.createIcons();
+            container.appendChild(card);
         }
 
-        function openDocument(driveId) {
-            const viewUrl = `https://drive.google.com/file/d/${driveId}/view?usp=drive_link`;
-            window.open(viewUrl, '_blank', 'noopener,noreferrer');
+        function updateActiveNav(key) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            const active = document.querySelector(`[data-key="${key}"]`);
+            if (active) active.classList.add('active');
         }
 
-        // === START ===
-        init();
-        
-        console.log('%c🧩 Portail QHSE Les Mousquetaires', 'color: #E2001A; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px rgba(226,0,26,0.5);');
-        console.log('%c✨ Navigation par puzzle multi-niveaux - Système PowerPoint complet', 'color: #10b981; font-size: 12px; font-weight: bold;');
+        window.onload = init;
     </script>
 </body>
 </html>
